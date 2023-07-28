@@ -1,0 +1,49 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+ 
+    <title>@ViewBag.Info.F_SeoTitle</title>
+    @Html.Partial("~/Areas/en/Views/Shared/_Head.cshtml")
+    <meta name="keyword" content="@ViewBag.Info.F_SeoKeywords" />
+    <meta name="Description" content="@ViewBag.Info.F_SeoDescription" />
+    <style>
+        html,
+        body {
+            background: #EFF1F3;
+            overflow: auto;
+        }
+    </style>
+
+</head>
+<body class="en">
+    
+    <div class="NavBox">
+        @Html.Partial("~/Areas/en/Views/Shared/_Menu.cshtml")
+    </div>
+    <div class="w1200 m0aoto " id="swiper-container1">
+        <div class="h60"></div>
+        <div class="h60"></div>
+        <div class=" f20 tec">@ViewBag.Info.F_Titile</div>
+        <div class="h20"></div>
+        <div class="center">
+            <img width="17" src="~/img/date.png" alt="">
+            <div class="f14" style="opacity: 0.4; margin-left: 10px;">@ViewBag.Info.F_PublishTime.ToString("yyyy-MM-dd")</div>
+        </div>
+        <div class="h20"></div>
+        <div class="h20"></div>
+        <div class="f16 newsdis" style="color: #4c4c4c; line-height: 1.8;">
+            @Html.Raw(ViewBag.Info.F_LiveIntroduction)
+        </div>
+        <div class="h60"></div>
+    </div>
+    <div class="footerBox">
+        @Html.Partial("~/Areas/en/Views/Shared/_Bottom.cshtml")
+    </div>
+    <script type="text/javascript">
+        $(".Navigation").addClass("on")
+        
+    </script>
+</body>
+</html>
+

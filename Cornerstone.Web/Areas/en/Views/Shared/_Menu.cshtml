@@ -1,0 +1,139 @@
+﻿<div class="Navigation pf flex alignitems_center trall3" style="z-index: 3;">
+    <div class="w1200 m0aoto flex alignitems_center justify_between">
+        <div class="center">
+            <a href="/en/" class="center iconfonts icon-a-Blueyingwenlogo trall3" style="font-size: 40px;">
+
+            </a>
+        </div>
+        <div class="flex alignitems_center justify_end" style="width: calc(100% - 150px);">
+
+            <div class="f16 flex alignitems_center justify_end header-menu">
+                <div class="header-menu-lm">
+                    <a href="/en/" class="header-menu-title center pr cursor cfff lm1 trall3">
+                        Home<span class="dn"></span>
+                        <div class="global-subnav pa dn"></div>
+                    </a>
+                    <div class="global-subnav__links pa dn">
+
+                    </div>
+                </div>
+                <div class="header-menu-lm">
+                    <a href="/en/about_us" class="header-menu-title center pr cursor cfff lm1 trall3">
+                        About Us<span class="dn"></span>
+                        <div class="global-subnav pa dn"></div>
+                    </a>
+                    
+                </div>
+                <div class="header-menu-lm">
+                    <a href="/en/product_center/" class="header-menu-title center pr cursor cfff lm1 trall3">
+                        Products<span class="dn"></span>
+                        <div class="global-subnav pa dn"></div>
+                    </a>
+                 
+                </div>
+                <div class="header-menu-lm">
+                    <a href="javascript:$('.jq').show();" class="header-menu-title center pr cursor cfff lm1 trall3">
+                        Education&training<span class="dn"></span>
+                        <div class="global-subnav pa dn"></div>
+                    </a>
+                    
+                </div>
+                <div class="header-menu-lm">
+                    <a href="/en/news_center" class="header-menu-title center pr cursor cfff lm1 trall3">
+                        News Center<span class="dn"></span>
+                        <div class="global-subnav pa dn"></div>
+                    </a>
+                    <div class="global-subnav__links pa dn">
+
+                    </div>
+                </div>
+                <div class="header-menu-lm">
+                    <a href="/en/careers" class="header-menu-title center pr cursor cfff lm1 trall3">
+                        Join Us<span class="dn"></span>
+                        <div class="global-subnav pa dn"></div>
+                    </a>
+                   
+                </div>
+                <div class="header-menu-lm">
+                    <a href="/en/contact_us" class="header-menu-title center pr cursor cfff lm1 trall3">
+                        Contact Us<span class="dn"></span>
+                        <div class="global-subnav pa dn"></div>
+                    </a>
+                    <div class="global-subnav__links pa dn">
+
+                    </div>
+                </div>
+                <div class="header-menu-lm showlan">
+                    <a href="javascript:void(0);" class="header-menu-title center pr cursor cfff lm1 trall3 butlang">
+                        CN
+                        <i class="iconfonts icon-jiantou f12" style="margin-left: 5px;"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="pa whtl0 center jq" style="background: rgba(0, 0, 0, 0.8); z-index: 9; display:none;">
+    <div class="bfff" style="padding: 50px 50px 30px 50px;">
+
+        <div class="f16 tec" style="color: #979797; line-height: 2; ">
+            Coming soon
+        </div>
+        <div class="h20"></div>
+        <div class="h10"></div>
+        <div class="b005059 center f16 cursor m0aoto cfff"
+             style=" width: 150px; height: 48px; " onclick="javascript: $('.jq').hide();">Sure</div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    var navArr = ["about_us", "product_center", "education_and_training", "news_center", "careers", "contact_us"]
+    var currentNum = -1
+    for (var i = 0; i < navArr.length; i++) {
+        if (window.location.href.indexOf(navArr[i]) >= 0) {
+            currentNum = i
+        }
+    }
+
+    if (window.location.href.indexOf("Newsdis") >= 0) {
+        currentNum = 3
+    }
+
+    if (currentNum >= 0) {
+        $(".header-menu>div:nth-child(" + (currentNum + 2) + ") .lm1").addClass("on")
+    } else {
+        $(".header-menu>div:nth-child(1) .lm1").addClass("on")
+    }
+
+    $(".Navigation>div").click(function () {
+        if ($(this).hasClass("on")) {
+            $(this).removeClass("on")
+        } else {
+            $(this).addClass("on")
+        }
+    })
+
+    $(function () {
+        $("#swiper-container1").click(function (event) {
+            $(".Navigation>div").removeClass("on")
+        })
+    });
+
+    $(".butlang").click(function () {
+        var origin = window.location.origin;
+        var pathname = window.location.pathname;
+
+        var url = ""
+        if (pathname.indexOf("/en") >= 0) {
+            url = origin + pathname.split("/en")[1]
+        } else {
+            url = origin + "/en" + pathname
+        }
+
+        location.href = url
+
+    })
+   
+</script>

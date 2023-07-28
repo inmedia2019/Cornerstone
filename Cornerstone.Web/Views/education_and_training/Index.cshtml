@@ -1,0 +1,984 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>教育培训</title>
+    @Html.Partial("~/Views/Shared/_Head.cshtml")
+    @*<meta name="keyword" content="@ViewBag.Info.F_SeoKeywords" />
+        <meta name="Description" content="@ViewBag.Info.F_SeoDescription" />*@
+    <script src="js/jquery.pagination.js?v=1" type="text/javascript" charset="utf-8"></script>
+    <script src="js/jquery.cookie.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/city.js" type="text/javascript" charset="utf-8"></script>
+    <style>
+        html,
+        body {
+            background: #EFF1F3;
+            overflow:auto
+        }
+
+        .b666666 {
+            background: #b9b9b9;
+        }
+    </style>
+</head>
+<body>
+    <div class="NavBox">
+        @Html.Partial("~/Views/Shared/_Menu.cshtml")
+    </div>
+    <div id="app" class="dn train">
+        <div v-if="step==0" :style="{'background':Signstep==1?'#fff':'url(img/trainbg0.jpg)','background-size':'cover'}">
+            <div class="w1200 m0aoto winHeight flex justify_end alignitems_center" style="min-height: 550px;">
+                <div class="">
+                    <div class="h60"></div>
+                    <div class="bfff flex alignitems_center" style="height: 400px;" v-if="Signstep==0">
+                        <!-- <div class="center">
+                        <img width="260" src="img/traint1.jpg" alt="">
+                    </div> -->
+                        <div class="" style=" padding: 0px 40px; width: 275px;">
+                            <div class="c005059 fb f20 tec">登录账号</div>
+                            <div class="h30"></div>
+                            <div class="pr" style="">
+                                <el-input v-model="form.phone" :maxlength="11" placeholder="请输入用户名（手机号码）"></el-input>
+                                <div class="center pa"
+                                     style="top: 0px; left: 0px; bottom: 0px; width: 50px;">
+                                    <img height="16" src="img/yhm.png" alt="">
+                                </div>
+                            </div>
+                            <div class="h20"></div>
+                            <div class="pr" style="">
+                                <el-input v-model="form.pass" show-password placeholder="请输入密码">
+                                </el-input>
+                                <div class="center pa"
+                                     style="top: 0px; left: 0px; bottom: 0px; width: 50px;">
+                                    <img height="20" src="img/mima.png" alt="">
+                                </div>
+                            </div>
+                            <div class="h20"></div>
+                            <div class="flex justify_end">
+                                <div class="cursor"
+                                     style=" color: #979797; border-bottom: #979797 solid 1px; "
+                                     @@click="Signstep=2">
+                                    忘记密码？
+                                </div>
+                            </div>
+                            <div class="h30"></div>
+                            <div class="flex alignitems_end justify_between">
+                                <div class="" style=" color: #979797; margin-bottom: 5px; ">
+                                    还没有注册账号，<span class="c005059 cursor"
+                                                  style="border-bottom: #005059 solid 1px;"
+                                                  @@click="Signstep=1">立即注册</span>
+                                </div>
+                                <div class="b005059 cfff center cursor"
+                                     style="width: 80px; height: 40px;" @@click="butSign">
+                                    登录
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bfff" style="padding: 40px 0px;" v-if="Signstep==1">
+                        <div class="c005059 fb f20 tec">注册账号</div>
+                        <div class="h40"></div>
+                        <div class="register flex" style="flex-wrap: wrap;">
+                            <div><el-input v-model="form3.trueName" placeholder="*姓名"></el-input></div>
+                            <div><el-input v-model="form3.phone" :maxlength="11" placeholder="*用户名（手机号码）"></el-input></div>
+                            <div><el-input v-model="form3.companyName" placeholder="*单位名称"></el-input></div>
+                            <div>
+                                <el-cascader :props="props"
+                                             v-model="form3.surname"
+                                             :options="city" placeholder="*省市" style="width: 100%;"></el-cascader>
+                            </div>
+                            <div>
+                                <el-select v-model="form3.department" placeholder="*科室/部门"
+                                           style="width: 100%;">
+                                    @{
+                                        for (int i = 0; i < ViewBag.Department.Count; i++)
+                                        {
+                                        <el-option label="@ViewBag.Department[i].F_Name" value="@ViewBag.Department[i].F_Name"></el-option>
+
+                                        }
+                                    }
+                                    @*<el-option label="产品信息1" value="产品信息1"></el-option>*@
+
+                                </el-select>
+                            </div>
+                            <div><el-input v-model="form3.email" placeholder="*邮箱"></el-input></div>
+                            <div><el-input v-model="form3.password" placeholder="*初始密码"></el-input></div>
+                            <div><el-input v-model="form3.ConfirmPassword" placeholder="*确认密码"></el-input></div>
+                            <div>
+                                <el-select v-model="form3.experience" placeholder="过往经验"
+                                           style="width: 100%;">
+                                    @{
+                                        for (int i = 0; i < ViewBag.History.Count; i++)
+                                        {
+                                        <el-option label="@ViewBag.History[i].F_Name" value="@ViewBag.History[i].F_Name"></el-option>
+
+                                        }
+                                    }
+                                </el-select>
+                            </div>
+                            <div class="pr">
+                                <el-input maxlength="6" v-model="form3.Code" placeholder="短信验证码"></el-input>
+                                <div class="pa b005059 cfff center cursor" :class="countdown2==60?'':'b666666'" @@click="butCode2" style="bottom: 0px; right: 0px; top: 0px; width: 100px; z-index: 3;">
+                                    {{countdown2==60?'获取验证码':'已发送：'+countdown2+'S'}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="h10"></div>
+                        <div class="flex alignitems_center cursor" style="color: #979797;">
+                            <div class="center b005059 bor4 cfff" style="width: 16px; height: 16px; margin-right: 5px; ">
+                                <i class="el-icon-check"></i>
+                            </div>
+                            我已阅读并同意本网站<a class="c005059" href="/Newsdis/Index/99fdbd51-24e3-4c36-9014-e65e23840b5c" target="_blank" style="border-bottom: #005059 solid 1px;">《隐私声明》</a>条款
+                        </div>
+                        <div class="h20"></div>
+                        <div class="flex alignitems_end justify_end">
+                            <div class="" style=" color: #979797; margin-bottom: 5px; ">
+                                已有帐号，立即 <span class="c005059 cursor"
+                                              style="border-bottom: #005059 solid 1px;"
+                                              @@click="Signstep=0">登录账号</span>
+                            </div>
+                            <div class="w10 h1"></div>
+                            <div class="w10 h1"></div>
+                            <div class="cfff center cursor"
+                                 style="width: 80px; height: 40px; background: #F0EFEF; color: #979797; " @@click="Signstep=0">
+                                返回
+                            </div>
+                            <div class="w10 h1"></div>
+                            <div class="w10 h1"></div>
+                            <div class="b005059 cfff center cursor"
+                                 style="width: 80px; height: 40px;" @@click="logon">
+                                注册
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bfff flex alignitems_center" style="height: 540px;" v-if="Signstep==2">
+
+                        <div class="" style=" padding: 0px 40px; width: 275px;">
+                            <div class="c005059 fb f20 tec">重置密码</div>
+                            <div class="h30"></div>
+                            <div class="pr" style="">
+                                <el-input v-model="form2.phone" :maxlength="11" placeholder="请输入用户名（手机号码）"></el-input>
+                                <div class="center pa"
+                                     style="top: 0px; left: 0px; bottom: 0px; width: 50px;">
+                                    <img height="16" src="img/yhm.png" alt="">
+                                </div>
+                            </div>
+                            <div class="h20"></div>
+                            <div class="pr" style="">
+                                <el-input v-model="form2.password" show-password placeholder="请输入密码">
+                                </el-input>
+                                <div class="center pa"
+                                     style="top: 0px; left: 0px; bottom: 0px; width: 50px;">
+                                    <img height="20" src="img/mima.png" alt="">
+                                </div>
+                            </div>
+                            <div class="h20"></div>
+                            <div class="pr" style="">
+                                <el-input v-model="form2.ConfirmPassword" show-password placeholder="请再次输入密码">
+                                </el-input>
+                                <div class="center pa"
+                                     style="top: 0px; left: 0px; bottom: 0px; width: 50px;">
+                                    <img height="20" src="img/mima.png" alt="">
+                                </div>
+                            </div>
+                            <div class="h20"></div>
+                            <div class="pr" style="">
+                                <el-input maxlength="6" v-model="form2.Code" placeholder="短信验证码"></el-input>
+                                <div class="pa b005059 cfff center cursor" :class="countdown==60?'':'b666666'" @@click="butCode" style="bottom: 0px; right: 0px; top: 0px; width: 100px; z-index: 3;">
+                                    {{countdown==60?'获取验证码':'已发送：'+countdown+'S'}}
+                                </div>
+                                <div class="center pa"
+                                     style="top: 0px; left: 0px; bottom: 0px; width: 50px;">
+                                    <img height="18" src="img/yqm.png" alt="">
+                                </div>
+                            </div>
+                            <div class="h60"></div>
+                            <div class="h60"></div>
+                            <div class="flex alignitems_end justify_between">
+                                <div class="" style=" color: #979797; margin-bottom: 5px; ">
+                                    已有帐号，立即 <span class="c005059 cursor"
+                                                  style="border-bottom: #005059 solid 1px;"
+                                                  @@click="Signstep=0">登录账号</span>
+                                </div>
+                                <div class="b005059 cfff center cursor"
+                                     style="width: 80px; height: 40px;" @@click="butResetting">
+                                    确定
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div v-if="step==1" class="pr"
+             style="background: #EFF1F3;">
+            <div class="w1200 m0aoto winHeight center">
+                <div class="w100">
+                    <div class="h60"></div>
+                    <div class="f24 c005059">康诺思腾机器人手术培训体系</div>
+                    <div class="h40"></div>
+                    <div class="flex alignitems_end justify_between traSur cfff">
+                        <div class="center cursor" :class="traSurInx==0?'on':''" @@click="traSurInx=0">理论学习阶段</div>
+                        <img width="40" src="img/traint6.png" alt="">
+                        <div class="center cursor" :class="traSurInx==1?'on':''" @@click="traSurInx=1">模拟操作阶段</div>
+                        <img width="40" src="img/traint6.png" alt="">
+                        <div class="center cursor" :class="traSurInx==2?'on':''" @@click="traSurInx=2">动物实验阶段</div>
+                        <img width="40" src="img/traint6.png" alt="">
+                        <div class="center cursor" :class="traSurInx==3?'on':''" @@click="traSurInx=3">临床实践阶段</div>
+                    </div>
+                    <div class="traSurNr" style="height:500px; line-height: 1.8;  overflow-y: auto; background: url(img/traint5.jpg) no-repeat center; background-size:cover;">
+                        <div class="" style="padding: 50px; ">
+                            <div class="" v-if="traSurInx==0">
+                                <span class="f16">理论学习阶段：了解手术机器人的基本功能及工作原理</span>
+                                <br><br><strong>培训目标：</strong>了解产品设计及部件名称，熟悉设备规范操作流程
+                                <br><strong>适用人群：</strong>有意向开展机器人手术的团队
+                                <br><strong>培训时长：</strong>0.5天
+                                <br><strong>培训地点：</strong>获得认证的培训中心
+                                <br><strong>培训形式：</strong>理论授课
+                                <br><strong>培训讲师：</strong>康诺思腾内部认证讲师
+                                <br><strong>培训内容：</strong>产品设计原理及各部件名称、基本工作原理、设备准备及调试连接、手术室布局、设备清洁及器械管理、设备管理及存放
+                                <br><strong>培训重点：</strong>
+                                <br><strong>术者：</strong>了解产品设计原理及手术操作流程
+                                <br><strong>助手：</strong>了解产品设计原理及手术操作流程
+                                <br><strong>手术室护士：</strong>产品基本原理及准备流程
+                                <br><strong>进阶条件：</strong>完成理论学习并通过考核
+                            </div>
+                            <div class="" v-if="traSurInx==1">
+                                <span class="f16">模拟操作阶段：模拟环境下掌握机器人的基本操作技能及配合</span>
+                                <br><br><strong>培训目标：</strong>熟悉术前准备，消毒，调试等基础操作及机器人手术各项基础技能
+                                <br><strong>适用人群：</strong>已完成理论培训，需要掌握手术机器人的基础技能的手术团队
+                                <br><strong>培训时长：</strong>0.5天
+                                <br><strong>培训地点：</strong>获得认证的培训中心
+                                <br><strong>培训形式：</strong>模拟器操作练习
+                                <br><strong>培训讲师：</strong>康诺思腾内部认证讲师
+                                <br><strong>培训内容：</strong>设备的手术室布局、设备连接及无菌准备、病人体位及手术入路规划、患者手术平台对接与器械置入、手术操作技能：运镜技能、双手配合&精准定位、剪切&缝合打结、能量器械使用
+                                <br><strong>培训重点：</strong>
+                                <br><strong>术者：</strong>基础操作技能
+                                <br><strong>助手：</strong>手术配合及入路准备
+                                <br><strong>手术室护士：</strong>设备连接及无菌准备
+                            </div>
+                            <div class="" v-if="traSurInx==2">
+                                <span class="f16">动物实验阶段：动物实验中提升手术技能及团队配合能力</span>
+                                <br><br><strong>培训目标：</strong>按照专科分类，模拟临床手术全流程操作，掌握相关技能
+                                <br><strong>适用人群：</strong>已完成基础操作培训，需要通过动物实验进行专科手术技能模拟练习的机器人手术团队
+                                <br><strong>培训时长：</strong>1天
+                                <br><strong>培训地点：</strong>获得认证的培训中心
+                                <br><strong>培训形式：</strong>动物实验术式操作练习
+                                <br><strong>培训讲师：</strong>认证讲师
+                                <br><strong>培训内容：</strong>动物实验前对比解剖介绍及推荐练习手术步骤、专科模拟临床手术练习、
+                                <br><strong>泌尿科术式：</strong>肾癌根治术；前列腺腺癌根治术；膀胱癌根治术；前列腺癌根治术、
+                                <br><strong>妇科术式：</strong>子宫内膜癌根治术、
+                                <br><strong>普外科术式：</strong>胃癌&直肠癌根治术；胆囊&肝脏左外叶切除术、
+                                <br><strong>胸外：</strong>肺叶切除术
+                                <br><strong>培训重点：</strong>
+                            </div>
+                            <div class="" v-if="traSurInx==3">
+                                <span class="f16">临床实践阶段：按照临床计划开展机器人手术</span>
+                                <br><strong>培训目标：</strong>根据手术团队实际情况，制定临床手术计划，增强学术信心，掌握由简单至复杂的机器人临床手术，度过学习曲线
+                                <br><strong>适用人群：</strong>完成动物实验培训，准备开展机器人手术的团队
+                                <br><strong>培训时长：</strong>90天
+                                <br><strong>培训地点：</strong>手术团队工作单位
+                                <br><strong>培训形式：</strong>临床手术
+                                <br><strong>培训讲师：</strong>-
+                                <br><strong>培训内容：</strong>按照手术计划开展不同阶段的机器人临床手术病理，积累手术经验
+                                <br><strong>培训重点：</strong>
+                                <br><strong>术者：</strong>开展临床手术
+                                <br><strong>助手：</strong>临床手术配合及入路准备
+                                <br><strong>手术室护士：</strong>设备连接及无菌准备
+                                <br><strong>进阶条件：</strong>90天内完成10-15例机器人手术
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex justify_end" style="margin-top: -25px;">
+                        <div class="b005059 center f16 cursor cfff"
+                             style="width: 200px; height: 50px;" @@click="buttrain">进入培训</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div v-if="step==2" class="pr">
+            <div class="h60"></div>
+            <div class="b005059">
+                <div class="w1200 m0aoto cfff flex justify_end alignitems_center h40">
+                    <div>账户：<span id="account"></span></div>
+                    <div @@click="butsignout" class="cursor" style="margin-left: 20px; margin-right: 10px;">
+                        <span class="el-dropdown-link">
+                            退出登录<i class="el-icon-arrow-right el-icon--right"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="w1200 m0aoto">
+                <div class="pr winHeights flex justify_end">
+
+
+
+                    <div class="bfff h100 pa tec bjsddd" style="top: 0px; width: 100px; ">
+                        <div class=" h100 tec m0aoto" style="width: 150px;">
+                            <div class="h20"></div>
+                            <div class="tec fb f20 c005059">
+                                培训资料
+                            </div>
+                            <div class="h20"></div>
+                            <div class="trainlist f16 m0aoto" style="color: #607187;">
+                                @{
+                                    for (int i = 0; i < ViewBag.tagData.Count; i++)
+                                    {
+                                    <div class="center cursor" @@click="tagId='@ViewBag.tagData[i].F_Id';callbackAjax(1)" data-id="@ViewBag.tagData[i].F_Id">@ViewBag.tagData[i].F_Name</div>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="bjsnr" style="width: calc(100% - 190px); padding-top: 20px; ">
+                        <el-row :gutter="12" style="margin-right: 6px;">
+                            <el-col class="cursor" :span="8" v-for="(o, index) in videoData"
+                                    style="padding: 0px 0px 0px 20px; margin-bottom: 20px; ">
+                                <el-card shadow="hover" :body-style="{ padding: '0px' }">
+                                    <div @@click="butPlayVideo(o)">
+                                        <div class="center" :style="{ 'background': 'url('+o.CoverImage+') center center / cover no-repeat #fff' }"
+                                             style=" height: 150px;">
+                                            <img width="30" src="img/play.png" alt="">
+                                        </div>
+                                        <div style="height: 77px;">
+                                            <div class="h5"></div>
+                                            <div class="ellipsis" style="padding: 8px 15px;">
+                                                {{o.Titile}}
+                                            </div>
+                                            <div class="h5"></div>
+                                            <div class="cfff center h30" v-if="o.isRead==1"
+                                                 style="background: rgba(0, 80, 89, 0.2); width: 100px;">
+                                                已观看
+                                            </div>
+                                        </div>
+                                    </div>
+                                </el-card>
+                            </el-col>
+                        </el-row>
+                        <div class="h60"></div>
+                        <div class="center">
+                            @*<div id="pagination" class="Pagination center" style="">
+
+                            </div>*@
+                            <div class="center">
+                                <el-pagination background layout="prev, pager, next" :total="@ViewBag.Count" :page-size="9" @@current-change="urrentchange">
+                                </el-pagination>
+                            </div>
+                        </div>
+                        <div class="h60"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="pa whtl0 center" style="background: rgba(0, 0, 0, 0.8);" v-if="isBoxvideoShow">
+                <div class="bfff pr bor6" style="padding:15px; margin: 0px 20px;">
+                    <div @@click="isBoxvideoShow=false" class="pa cursor" style="bottom: -80px; left: 50%; margin-left: -25px; ">
+                        <svg viewBox="0 0 1024 1024" width="40" height="40">
+                            <path d="M512 960c-247.039484 0-448-200.960516-448-448S264.960516 64 512 64 960 264.960516 960 512 759.039484 960 512 960zM512 128.287273c-211.584464 0-383.712727 172.128262-383.712727 383.712727 0 211.551781 172.128262 383.712727 383.712727 383.712727 211.551781 0 383.712727-172.159226 383.712727-383.712727C895.712727 300.415536 723.551781 128.287273 512 128.287273z"
+                                  fill="#ffffff" p-id="3842" data-spm-anchor-id="a313x.7781069.0.i0"
+                                  class="selected"></path>
+                            <path d="M557.05545 513.376159l138.367639-136.864185c12.576374-12.416396 12.672705-32.671738 0.25631-45.248112s-32.704421-12.672705-45.248112-0.25631l-138.560301 137.024163-136.447897-136.864185c-12.512727-12.512727-32.735385-12.576374-45.248112-0.063647-12.512727 12.480043-12.54369 32.735385-0.063647 45.248112l136.255235 136.671523-137.376804 135.904314c-12.576374 12.447359-12.672705 32.671738-0.25631 45.248112 6.271845 6.335493 14.496116 9.504099 22.751351 9.504099 8.12794 0 16.25588-3.103239 22.496761-9.247789l137.567746-136.064292 138.687596 139.136568c6.240882 6.271845 14.432469 9.407768 22.65674 9.407768 8.191587 0 16.352211-3.135923 22.591372-9.34412 12.512727-12.480043 12.54369-32.704421 0.063647-45.248112L557.05545 513.376159z"
+                                  fill="#ffffff" p-id="3843" data-spm-anchor-id="a313x.7781069.0.i1"
+                                  class="selected"></path>
+                        </svg>
+                    </div>
+                    <div class="center">
+                        <video controls width="700" class="videoClass" :poster="videoDis.CoverImage"
+                               :src="videoDis.VideoInfo"></video>
+                    </div>
+                    <div class="f16" style="padding: 20px 0px 0px 0px;">
+                        {{videoDis.WonderfulContent}}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="pf whtl0 center showState" style="background: rgba(0, 0, 0, 0.8); z-index: 9;" v-if="isBoxFailedShow">
+            <div class="bfff" style="padding: 50px 30px 30px 30px;">
+
+                <div class="f16 tec" style="color: #979797; line-height: 2; ">
+                    很抱歉，您的账号尚未通过审核<br>
+                    如果需要帮助，请联系康诺思腾工作人员<br>
+                    或发送电子邮件至<span style="color: #417DAF; text-decoration: underline; opacity: 0.6;">marketing@csrbtx.com</span>
+
+                </div>
+                <div class="h20"></div>
+                <div class="h10"></div>
+                <div class="b005059 center f16 cursor m0aoto cfff"
+                     style=" width: 150px; height: 48px; " @@click="isBoxFailedShow=false">确定</div>
+            </div>
+        </div>
+    </div>
+    <div class="footerBox">
+        @Html.Partial("~/Views/Shared/_Bottom.cshtml")
+    </div>
+    <script type="text/javascript">
+
+        function screenFuc() {
+            var winWidth = $(window).innerWidth();
+            var winHeight = $(window).innerHeight()
+            //var winHeight = 500
+            if (winWidth > 750) {
+                $(".winHeight").css({
+                    "height": winHeight + "px"
+                })
+            } else {
+                $(".winHeight").css({
+                    "min-height": winHeight + "px"
+                })
+            }
+
+            $(".winHeights").css({
+                "min-height": (winHeight - 90) + "px"
+            })
+            var left = $(".winHeights").offset().left
+            console.log(left)
+            $(".bjsddd").css({ left: -left, width: left + 180 + "px" })
+
+        }
+        (window.onresize = function () {
+            screenFuc();
+        })();
+
+        setTimeout(() => {
+            screenFuc()
+        }, 80)
+
+        new Vue({
+            el: '#app',
+            data() {
+                return {
+                    props: { value: "label" },
+                    city: city,
+                    step: 0,
+                    Signstep: 0,
+                    traSurInx: 0,
+                    form: {
+                        phone: "",
+                        pass: ""
+                    },
+                    setOut: "",
+                    countdown: 60,
+                    SenUserPhoneCode: "",
+                    form2: {
+                        phone: "",
+                        password: "",
+                        ConfirmPassword: "",
+                        Code: ""
+                    },
+                    setOut2: "",
+                    countdown2: 60,
+                    SenUserPhoneCode2: "",
+                    form3: {
+                        trueName: "",
+                        phone: "",
+                        companyName: "",
+                        surname: "",
+                        department: "",
+                        email: "",
+                        password: "",
+                        ConfirmPassword: "",
+                        experience: "",
+                        Code: ""
+                    },
+                    isBoxexamineShow: false,
+                    isBoxFailedShow: false,
+                    isBoxvideoShow: false,
+                    details: {
+                        isexamine: true
+                    },
+                    columnList: [],
+                    surname: "",
+                    input: "",
+
+                    tagId:"",
+                    videoData: [],
+                    videoDis: {},
+
+                };
+            },
+            created() {
+                console.log(this.tagList)
+                var information = $.cookie("information")
+                if (information) {
+                    this.step = 1
+                    $("#account").html(information);
+                    console.log(information)
+                }
+                this.callbackAjax(1)
+
+                 @*$('#pagination').pagination({
+                    totalData: @ViewBag.Count,
+                    showData: 1,
+                    coping: true,
+                    homePage: '',
+                    endPage: '',
+                    prevContent: '',
+                    nextContent: '',
+                    prevCls: 'el-icon el-icon-arrow-left', //上一页class
+                    nextCls: 'el-icon el-icon-arrow-right', //下一页class
+                    callback: function (api) {
+
+                        callbackAjax(api.getCurrent(), tagId)
+
+                    }
+                });*@
+            },
+            methods: {
+                isPoneAvailable(poneInput) {
+                    var myreg = /^[1][2,3,4,5,6,7,8,9][0-9]{9}$/;
+                    if (!myreg.test(poneInput)) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                },
+                isEmailAvailable(emailInput) {
+                    if (emailInput.indexOf('@@') >= 0) {
+                        return true
+                    }
+                    return false
+                },
+                butSign() {
+                    if (this.form.phone == "") {
+                        this.$message.error('请输入手机号！');
+                        return
+                    }
+                    if (this.form.pass == "") {
+                        this.$message.error('请输入密码！');
+                        return
+                    }
+                    const loading = this.$loading({
+                        lock: true,
+                        text: 'Loading',
+                        spinner: 'el-icon-loading',
+                        background: 'rgba(0, 0, 0, 0.7)'
+                    });
+                    var that = this;
+                    $.ajax({
+                        type: "POST",
+                        url: '/education_and_training/ValidateInfo',
+                        async: false,
+                        contentType: "application/json",
+
+                        data: JSON.stringify(this.form),
+                        beforeSend: function (xmlHttpRequest) {
+                        },
+                        success: function (data, textStatus) {
+
+                            if (data == "1") {
+                                setTimeout(() => {
+
+                                    loading.close();
+                                    that.step = 1
+
+                                    var date = new Date();
+                                    date.setTime(date.getTime() + (60 * 1000 * 60 * 24));
+
+                                    $.cookie("information", that.form.phone, { expires: date });
+
+                                    if (!that.details.isexamine) {
+                                        that.isBoxexamineShow = true
+                                    }
+                                }, 2000);
+                            }
+                            else {
+                                loading.close();
+                                that.$message.error('账户名和密码错误!');
+                                return
+                            }
+                        },
+                        complete: function (xmlHttpRequest, textStatus) {
+                        },
+                        error: function () {
+                        }
+                    });
+
+
+
+                },
+                butCode() {
+                    if (this.form2.phone == "") {
+                        this.$message.error('请输入用户名（手机号码）！');
+                        return
+                    }
+                    if (!this.isPoneAvailable(this.form2.phone)) {
+                        this.$message.error('用户名（手机号码）格式不正确！');
+                        return
+                    }
+
+                    if (this.countdown < 60) {
+                        return
+                    }
+                    const loading = this.$loading({
+                        lock: true,
+                        text: 'Loading',
+                        spinner: 'el-icon-loading',
+                        background: 'rgba(0, 0, 0, 0.7)'
+                    });
+
+                    var that = this;
+
+                    $.ajax({
+                        type: "GET",
+                        url: '/education_and_training/SendCode',
+                        async: false,
+                        contentType: "application/json",
+                        data: { "phone": this.form2.phone},
+                        beforeSend: function (xmlHttpRequest) {
+                        },
+                        success: function (data, textStatus) {
+                            if (data != "0") {
+                                that.$message({
+                                    message: '验证码已发送！',
+                                    type: 'success'
+                                });
+
+                                loading.close();
+                                that.countdown = 59
+                                that.setOut = setInterval(() => {
+                                    that.countdown--
+                                    if (that.countdown == 0) {
+                                        clearInterval(that.setOut)
+                                        that.countdown = 60
+                                    }
+                                }, 1000)
+                                that.SenUserPhoneCode = data
+                            }
+                        },
+                        complete: function (xmlHttpRequest, textStatus) {
+                        },
+                        error: function () {
+                        }
+                    });
+
+
+
+                },
+                butResetting() {
+                    if (this.form2.phone == "") {
+                        this.$message.error('请输入用户名（手机号码）！');
+                        return
+                    }
+                    if (!this.isPoneAvailable(this.form2.phone)) {
+                        this.$message.error('用户名（手机号码）格式不正确！');
+                        return
+                    }
+                    if (this.form2.password == "") {
+                        this.$message.error('请输入密码！');
+                        return
+                    }
+                    if (this.form2.ConfirmPassword == "") {
+                        this.$message.error('请再次输入密码！');
+                        return
+                    }
+                    if (this.form2.password != this.form2.ConfirmPassword) {
+                        this.$message.error('两次密码不一致，请重新输入！');
+                        return
+                    }
+                    if (this.form2.Code == "") {
+                        this.$message.error('请输入短信验证码！');
+                        return
+                    }
+                    if (this.form2.Code != this.SenUserPhoneCode) {
+                        this.$message.error('短信验证码输入不正确！');
+                        return
+                    }
+                    const loading = this.$loading({
+                        lock: true,
+                        text: 'Loading',
+                        spinner: 'el-icon-loading',
+                        background: 'rgba(0, 0, 0, 0.7)'
+                    });
+
+                    $.ajax({
+                        type: "POST",
+                        url: '/education_and_training/ModifyInfo',
+                        async: false,
+                        contentType: "application/json",
+                        data: JSON.stringify(this.form2),
+                        beforeSend: function (xmlHttpRequest) {
+                        },
+                        success: function (data, textStatus) {
+                            if (data == "2") {
+                                setTimeout(() => {
+                                    loading.close();
+                                    this.$message.error('该手机号不存在！');
+                                }, 2000);
+                            }
+                            else if (data == "1") {
+                                setTimeout(() => {
+                                    loading.close();
+                                    that.Signstep = 0
+                                    that.$message({
+                                        message: '重置成功',
+                                        type: 'success'
+                                    });
+                                }, 2000);
+                            }
+                        },
+                        complete: function (xmlHttpRequest, textStatus) {
+                        },
+                        error: function () {
+                        }
+                    });
+
+                },
+                butCode2() {
+                    if (this.form3.phone == "") {
+                        this.$message.error('请输入用户名（手机号码）！');
+                        return
+                    }
+                    if (!this.isPoneAvailable(this.form3.phone)) {
+                        this.$message.error('用户名（手机号码）格式不正确！');
+                        return
+                    }
+
+                    if (this.countdown2 < 60) {
+                        return
+                    }
+                    const loading = this.$loading({
+                        lock: true,
+                        text: 'Loading',
+                        spinner: 'el-icon-loading',
+                        background: 'rgba(0, 0, 0, 0.7)'
+                    });
+
+                    var that = this;
+
+                    $.ajax({
+                        type: "GET",
+                        url: '/education_and_training/SendCode',
+                        async: false,
+                        contentType: "application/json",
+                        data: { "phone": this.form3.phone },
+                        beforeSend: function (xmlHttpRequest) {
+                        },
+                        success: function (data, textStatus) {
+                            if (data != "0") {
+                                that.$message({
+                                    message: '验证码已发送！',
+                                    type: 'success'
+                                });
+
+                                loading.close();
+                                that.countdown2 = 59
+                                that.setOut = setInterval(() => {
+                                    that.countdown2--
+                                    if (that.countdown2 == 0) {
+                                        clearInterval(that.setOut)
+                                        that.countdown2 = 60
+                                    }
+                                }, 1000)
+                                that.SenUserPhoneCode2 = data
+                            }
+                        },
+                        complete: function (xmlHttpRequest, textStatus) {
+                        },
+                        error: function () {
+                        }
+                    });
+
+                },
+                logon() {
+
+                    if (this.form3.trueName == "") {
+                        this.$message.error('请输入姓名！');
+                        return
+                    }
+                    if (this.form3.phone == "") {
+                        this.$message.error('请输入用户名（手机号码）！');
+                        return
+                    }
+                    if (!this.isPoneAvailable(this.form3.phone)) {
+                        this.$message.error('用户名（手机号码）格式不正确！');
+                        return
+                    }
+                    if (this.form3.companyName == "") {
+                        this.$message.error('请输入单位名称！');
+                        return
+                    }
+                    if (this.form3.surname == "") {
+                        this.$message.error('请选择所在省市！');
+                        return
+                    }
+                    if (this.form3.department == "") {
+                        this.$message.error('请选择科室/部门！');
+                        return
+                    }
+                    if (this.form3.email == "") {
+                        this.$message.error('请输入电子邮箱！');
+                        return
+                    }
+                    if (!this.isEmailAvailable(this.form3.email)) {
+                        this.$message.error('电子邮箱格式不正确！');
+                        return
+                    }
+                    if (this.form3.password == "") {
+                        this.$message.error('请输入密码！');
+                        return
+                    }
+                    if (this.form3.ConfirmPassword == "") {
+                        this.$message.error('请再次输入密码！');
+                        return
+                    }
+                    if (this.form3.password != this.form3.ConfirmPassword) {
+                        this.$message.error('两次密码不一致，请重新输入！');
+                        return
+                    }
+                    if (this.form3.Code == "") {
+                        this.$message.error('请输入短信验证码！');
+                        return
+                    }
+                    if (this.form3.Code != this.SenUserPhoneCode2) {
+                        this.$message.error('短信验证码输入不正确！');
+                        return
+                    }
+
+                    const loading = this.$loading({
+                        lock: true,
+                        text: 'Loading',
+                        spinner: 'el-icon-loading',
+                        background: 'rgba(0, 0, 0, 0.7)'
+                    });
+                    var that = this;
+                    this.form3.surname = (this.form3.surname).join("/")
+                    console.log(this.form3)
+                    $.ajax({
+                        type: "POST",
+                        url: '/education_and_training/AddInfo',
+                        async: false,
+                        contentType: "application/json",
+                        data: JSON.stringify(this.form3),
+                        beforeSend: function (xmlHttpRequest) {
+                        },
+                        success: function (data, textStatus) {
+                            if (data == "2") {
+                                setTimeout(() => {
+                                    loading.close();
+                                    this.$message.error('该手机号已经注册！');
+                                }, 2000);
+                            }
+                            else if (data == "1") {
+                                setTimeout(() => {
+                                    loading.close();
+                                    that.Signstep = 0
+                                    that.$message({
+                                        message: '注册成功',
+                                        type: 'success'
+                                    });
+                                }, 2000);
+                            }
+                        },
+                        complete: function (xmlHttpRequest, textStatus) {
+                        },
+                        error: function () {
+                        }
+                    });
+
+                },
+                buttrain() {
+                    var that = this;
+                    $.ajax({
+                        type: "Get",
+                        url: '/education_and_training/CheckUserState',
+                        async: false,
+                        data: { "phone": $.cookie("information") },
+                        beforeSend: function (xmlHttpRequest) {
+                        },
+                        success: function (data, textStatus) {
+                            
+                            if (data == "1") {
+                                that.step = 2
+                            }
+                            else {
+                                
+                                that.isBoxFailedShow = true
+                            }
+                        },
+                        complete: function (xmlHttpRequest, textStatus) {
+                        },
+                        error: function () {
+
+                        }
+                    });
+                  
+                    setTimeout(() => {
+                        screenFuc()
+                        $("#account").html($.cookie("information"));
+                    })
+
+                },
+                butPlayVideo(e) {
+                    this.isBoxvideoShow = true
+                    this.videoDis = e;
+                    $.ajax({
+                        type: "Get",
+                        url: '/education_and_training/AddUserActionInfo',
+                        async: false,
+                        data: { "phone": $.cookie("information"), "videoId": this.videoDis.Id },
+                        beforeSend: function (xmlHttpRequest) {
+                        },
+                        success: function (data, textStatus) {
+
+                        },
+                        complete: function (xmlHttpRequest, textStatus) {
+                        },
+                        error: function () {
+
+                        }
+                    });
+
+                },
+                butsignout() {
+                    this.step = 0
+                    $.removeCookie("information");
+                },
+                urrentchange(e) {
+                    console.log(e)
+                    this.callbackAjax(e)
+                },
+                callbackAjax(e) {
+                    var that = this
+                    $.ajax({
+                        type: "Get",
+                        url: '/education_and_training/GetDataByPage',
+                        async: false,
+                        data: { "currentPage": e, "tagId": this.tagId, "phone": $.cookie("information") },
+                        beforeSend: function (xmlHttpRequest) {
+                        },
+                        success: function (data, textStatus) {
+                            console.log(data);
+                            that.videoData = JSON.parse(data);
+                            console.log(that.videoData);
+                        },
+                        complete: function (xmlHttpRequest, textStatus) {
+                        },
+                        error: function () {
+
+                        }
+                    });
+                }
+            }
+        })
+
+        $(function () {
+            $("#app").show()
+            $(".Navigation").addClass("on")
+
+            
+
+        })
+
+
+
+
+
+
+
+
+    </script>
+</body>
+</html>

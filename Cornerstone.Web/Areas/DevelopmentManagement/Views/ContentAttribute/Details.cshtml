@@ -1,0 +1,97 @@
+﻿@{
+    ViewBag.Title = "Details"; 
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<script>
+    layui.use(['jquery', 'form', 'laydate', 'common'], function () {
+        var form = layui.form,
+            $ = layui.$,
+            common = layui.common,
+            laydate = layui.laydate;
+        var keyValue = $.request("keyValue");
+        //权限字段
+        common.authorizeFields('adminform');
+        //此处需修改
+        //类型为时间时
+        //laydate.render({
+            //elem: '#F_Birthday'
+            //, btns: ['clear', 'now']
+            //, trigger: 'click',
+            //format: 'yyyy-MM-dd',
+        //});
+
+        $(function () {
+            initControl();
+            common.ajax({
+                url: '@(Cornerstone.Code.GlobalContext.SystemConfig.VirtualDirectory)/DevelopmentManagement/ContentAttribute/GetFormJson',
+                dataType: 'json',
+                data: { keyValue: keyValue },
+                async: false,
+                success: function (data) {
+                    common.val('adminform', data);
+                    common.setReadOnly('adminform');
+                    form.render();
+                 }
+            });
+       });
+       wcLoading.close();
+
+       function initControl() {
+           //此处需修改
+           //绑定数据源
+           //类型为下拉框时
+       }
+   });
+</script>
+
+<body>
+    <div class="layuimini-container">
+        <div class="layuimini-main">
+            <div class="layui-form layuimini-form" lay-filter="adminform">
+                <div class="layui-form-item layui-hide">
+                   <label class="layui-form-label required">字段名称</label>
+                   <div class="layui-input-block">
+                        <input type="text" id="F_FieldName" name="F_FieldName" lay-verify="required" class="layui-input">
+                   </div>
+               </div>
+                <div class="layui-form-item layui-hide">
+                   <label class="layui-form-label required">字段类型</label>
+                   <div class="layui-input-block">
+                        <input type="text" id="F_FieldType" name="F_FieldType" lay-verify="required" class="layui-input">
+                   </div>
+               </div>
+                <div class="layui-form-item layui-hide">
+                   <label class="layui-form-label required">所属栏目</label>
+                   <div class="layui-input-block">
+                        <input type="text" id="F_ChannelId" name="F_ChannelId" lay-verify="required" class="layui-input">
+                   </div>
+               </div>
+                <div class="layui-form-item layui-hide">
+                   <label class="layui-form-label required">备注</label>
+                   <div class="layui-input-block">
+                        <input type="text" id="F_Remark" name="F_Remark" lay-verify="required" class="layui-input">
+                   </div>
+               </div>
+                <div class="layui-form-item layui-hide">
+                   <label class="layui-form-label required">是否启用</label>
+                   <div class="layui-input-block">
+                        <input type="text" id="F_EnabledMark" name="F_EnabledMark" lay-verify="required" class="layui-input">
+                   </div>
+               </div>
+                <div class="layui-form-item layui-hide">
+                   <label class="layui-form-label required">创建人</label>
+                   <div class="layui-input-block">
+                        <input type="text" id="F_CreatorUserId" name="F_CreatorUserId" lay-verify="required" class="layui-input">
+                   </div>
+               </div>
+                <div class="layui-form-item layui-hide">
+                   <label class="layui-form-label required">创建时间</label>
+                   <div class="layui-input-block">
+                        <input type="text" id="F_CreatorTime" name="F_CreatorTime" lay-verify="required" class="layui-input">
+                   </div>
+               </div>
+            </div>
+        </div>
+    </div>
+</body>
+

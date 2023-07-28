@@ -1,0 +1,170 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+    <script>
+        layui.use(['jquery', 'form', 'table', 'soulTable', 'common', 'treeTable', 'miniTab', 'layer', 'optimizeSelectOption'], function () {
+        var $ = layui.jquery,
+            form = layui.form,
+            table = layui.table,
+            layer = layui.layer,
+            miniTab = layui.miniTab,
+            treeTable = layui.treeTable,
+            soulTable = layui.soulTable,
+            common = layui.common;
+        //加载数据
+        wcLoading.close();
+        //权限控制(js是值传递)
+        toolbarDemo.innerHTML = common.authorizeButtonNew(toolbarDemo.innerHTML);
+        currentTableBar.innerHTML = common.authorizeButtonNew(currentTableBar.innerHTML);
+        var rendertree = common.rendertreetable({
+            elem: '#currentTableId',
+            url: '@(Cornerstone.Code.GlobalContext.SystemConfig.VirtualDirectory)/ContentManage/Column/GetTreeGridJson',
+            cols: [[
+                { field: 'F_Name', title: '名称', width: 200, sort: true},
+                {
+                    field: 'F_Type', title: '类型', width: 200, sort: true,
+                    templet: function (d) {
+                        return top.clients.dataItems["ColumnType"][d.F_Type] == undefined ? "" : top.clients.dataItems["ColumnType"][d.F_Type];
+                    }
+                },
+                {
+                    field: 'F_TemplateID', title: '模型名称', width: 200, sort: true,
+                    templet: function (d) {
+                        return top.clients.template[d.F_TemplateID] == undefined ? "" : top.clients.template[d.F_TemplateID].name;
+                    }
+                },
+                { field: 'F_LinkUrl', title: 'Url', width: 200, sort: true},
+                { field: 'F_Number', title: '文章数量', width: 200, sort: true},
+                { field: 'F_Order', title: '排序', width: 60, sort: true},
+                {
+                    field: 'F_IsBrowse', title: '是否开放浏览', width: 200,
+                    templet: function (d) {
+                        if (d.F_IsBrowse == true) {
+                            return "<span class='layui-btn layui-btn-normal layui-btn-xs'>是</span>";
+                        } else {
+                            return "<span class='layui-btn layui-btn-warm layui-btn-xs'>否</span>";
+                        }
+                    }
+                },
+                {
+                    field: 'F_EnabledMark', title: '是否显示', width: 200,
+                    templet: function (d) {
+                        if (d.F_EnabledMark == true) {
+                            return "<span class='layui-btn layui-btn-normal layui-btn-xs'>是</span>";
+                        } else {
+                            return "<span class='layui-btn layui-btn-warm layui-btn-xs'>否</span>";
+                        }
+                    }
+                }
+            ]],
+            done: function () {
+                //展开全部
+                rendertree.expandAll();
+            }
+        });
+        // 监听搜索操作
+        form.on('submit(data-search-btn)', function (data) {
+            queryJson = data.field.txt_keyword;
+            common.reloadtreetable(rendertree, {
+                where: { keyword: queryJson },
+            });
+            module = null;
+            return false;
+        });
+        var module;
+        treeTable.on('row(currentTableId)', function (obj) {
+            obj.tr.addClass("layui-table-click").siblings().removeClass("layui-table-click");
+            module = obj;
+        })
+        /**
+         * toolbar监听事件
+         */
+        treeTable.on('toolbar(currentTableId)', function (obj) {
+            if (obj.event === 'add') {  // 监听操作
+                keyValue = !!module ? module.data.F_Id : null;
+                common.openNewTabByIframe({
+                    title: "添加栏目",
+                    href: "@(Cornerstone.Code.GlobalContext.SystemConfig.VirtualDirectory)/ContentManage/Column/Form?event=add&keyValue=" + keyValue
+                });
+            }
+            else if (obj.event === 'delete') {
+                if (module == null) {
+                    common.modalMsg("未选中数据", "warning");
+                    return false;
+                }
+                common.deleteForm({
+                    url: "@(Cornerstone.Code.GlobalContext.SystemConfig.VirtualDirectory)/ContentManage/Column/DeleteForm",
+                    param: { keyValue: module.data.F_Id },
+                    success: function () {
+                        common.reload('data-search-btn');
+                    }
+                });
+            }
+
+            else if (obj.event === 'export') {
+                var entity = rendertree.checkStatus(false);
+                    table.exportFile(rendertree.config.id, entity, 'xls');
+            }
+            else if (obj.event === 'edit') {
+                if (module == null) {
+                    common.modalMsg("未选中数据", "warning");
+                    return false;
+                }
+                common.openNewTabByIframe({
+                    title: "编辑栏目",
+                    href: "@(Cornerstone.Code.GlobalContext.SystemConfig.VirtualDirectory)/ContentManage/Column/Form?event=edit&keyValue=" + module.data.F_Id
+                });
+            }
+            else if (obj.event === 'details') {
+                if (module == null) {
+                    common.modalMsg("未选中数据", "warning");
+                    return false;
+                }
+                common.openNewTabByIframe({
+                    title: "查看栏目",
+                    href: "@(Cornerstone.Code.GlobalContext.SystemConfig.VirtualDirectory)/ContentManage/Column/Details?keyValue=" + module.data.F_Id,
+                    btn: []
+                });
+            }
+            return false;
+        });
+    });
+    </script>
+<div class="layuimini-container">
+    <div class="layuimini-main">
+        <fieldset class="table-search-fieldset">
+            @*<legend>搜索信息</legend>*@
+            <div>
+                <form class="layui-form layui-form-pane" action="">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">关键字:</label>
+                            <div class="layui-input-inline">
+                                <input type="text" id="txt_keyword" name="txt_keyword" autocomplete="off" class="layui-input" placeholder="">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <button type="submit" class="layui-btn layui-btn-primary" lay-submit lay-filter="data-search-btn"><i class="layui-icon">&#xe615;</i> 搜 索</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </fieldset>
+        <script type="text/html" id="toolbarDemo">
+            <div class="layui-btn-container" id="toolbar">
+                <button id="NF-add" authorize="yes" class="layui-btn layui-btn-sm data-add-btn layui-hide" lay-event="add"><i class="layui-icon">&#xe654;</i>新建</button>
+                <button id="NF-edit" authorize="yes" class="layui-btn layui-btn-sm layui-btn-warm data-edit-btn layui-hide" lay-event="edit"><i class="layui-icon">&#xe642;</i>修改</button>
+                <button id="NF-delete" authorize="yes" class="layui-btn layui-btn-sm layui-btn-danger data-delete-btn layui-hide" lay-event="delete"> <i class="layui-icon">&#xe640;</i>删除</button>
+                <button id="NF-details" authorize="yes" class="layui-btn layui-btn-sm layui-btn-normal data-info-btn layui-hide" lay-event="details"> <i class="layui-icon">&#xe60b;</i>查看</button>
+                <button id="NF-export" authorize="yes" class="layui-btn layui-btn-sm  data-export-btn layui-hide" lay-event="export"> <i class="fa fa-key"></i>导出</button>
+            </div>
+        </script>
+        <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"></table>
+        <script type="text/html" id="currentTableBar">
+            <a id="NF-edit" authorize="yes" class="layui-btn layui-btn-sm" lay-event="edit">修改</a>
+            <a id="NF-delete" authorize="yes" class="layui-btn layui-btn-sm layui-btn-danger data-delete-btn" lay-event="delete">删除</a>
+            <a id="NF-details" authorize="yes" class="layui-btn layui-btn-sm layui-btn-normal data-info-btn" lay-event="details">查看</a>
+        </script>
+    </div>
+</div>

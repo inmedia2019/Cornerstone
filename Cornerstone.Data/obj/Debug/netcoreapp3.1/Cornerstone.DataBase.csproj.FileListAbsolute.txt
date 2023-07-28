@@ -1,0 +1,13 @@
+E:\work\K康诺思腾\Cornerstone.Data\bin\Debug\netcoreapp3.1\Cornerstone.DataBase.deps.json
+E:\work\K康诺思腾\Cornerstone.Data\bin\Debug\netcoreapp3.1\Cornerstone.DataBase.dll
+E:\work\K康诺思腾\Cornerstone.Data\bin\Debug\netcoreapp3.1\Cornerstone.DataBase.pdb
+E:\work\K康诺思腾\Cornerstone.Data\bin\Debug\netcoreapp3.1\Cornerstone.Code.dll
+E:\work\K康诺思腾\Cornerstone.Data\bin\Debug\netcoreapp3.1\Cornerstone.Code.pdb
+E:\work\K康诺思腾\Cornerstone.Data\obj\Debug\netcoreapp3.1\Cornerstone.DataBase.csproj.AssemblyReference.cache
+E:\work\K康诺思腾\Cornerstone.Data\obj\Debug\netcoreapp3.1\Cornerstone.DataBase.GeneratedMSBuildEditorConfig.editorconfig
+E:\work\K康诺思腾\Cornerstone.Data\obj\Debug\netcoreapp3.1\Cornerstone.DataBase.AssemblyInfoInputs.cache
+E:\work\K康诺思腾\Cornerstone.Data\obj\Debug\netcoreapp3.1\Cornerstone.DataBase.AssemblyInfo.cs
+E:\work\K康诺思腾\Cornerstone.Data\obj\Debug\netcoreapp3.1\Cornerstone.DataBase.csproj.CoreCompileInputs.cache
+E:\work\K康诺思腾\Cornerstone.Data\obj\Debug\netcoreapp3.1\Cornerstone.DataBase.csproj.CopyComplete
+E:\work\K康诺思腾\Cornerstone.Data\obj\Debug\netcoreapp3.1\Cornerstone.DataBase.dll
+E:\work\K康诺思腾\Cornerstone.Data\obj\Debug\netcoreapp3.1\Cornerstone.DataBase.pdb

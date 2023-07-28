@@ -1,0 +1,93 @@
+﻿@{
+    ViewBag.Title = "Form"; 
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<script>
+    layui.use(['jquery', 'form', 'laydate', 'common','optimizeSelectOption'], function () {
+        var form = layui.form,
+            $ = layui.$,
+            common = layui.common,
+            laydate = layui.laydate;
+        var keyValue = $.request("keyValue");
+        //权限字段
+        common.authorizeFields('adminform');
+        //此处需修改
+        //类型为时间时
+        //laydate.render({
+            //elem: '#F_Birthday'
+            //, btns: ['clear', 'now']
+            //, trigger: 'click',
+            //format: 'yyyy-MM-dd',
+        //});
+
+        $(function () {
+            initControl();
+            if (!!keyValue) {
+                 common.ajax({
+                   url: '@(Cornerstone.Code.GlobalContext.SystemConfig.VirtualDirectory)/ContentManage/Questiontypeinfo/GetFormJson',
+                   dataType: 'json',
+                   data: { keyValue: keyValue },
+                   async: false,
+                   success: function (data) {
+                       common.val('adminform', data);
+                    }
+               });
+           }
+           form.render();
+       });
+       wcLoading.close();
+
+       function initControl() {
+           //此处需修改
+           //绑定数据源
+           //类型为下拉框时
+       }
+
+       //监听提交
+       form.on('submit(saveBtn)', function (data) {
+           // 单击之后提交按钮不可选,防止重复提交
+           $('.site-demo-active').addClass('layui-btn-disabled');
+           $('.site-demo-active').attr('disabled', 'disabled');
+           var postData = data.field;
+           common.submitForm({
+               url: '@(Cornerstone.Code.GlobalContext.SystemConfig.VirtualDirectory)/ContentManage/Questiontypeinfo/SubmitForm?keyValue=' + keyValue,
+               param: postData,
+               success: function () {
+                   common.parentreload('data-search-btn');
+               }
+           })
+           return false;
+       });
+   });
+</script>
+
+<body>
+    <div class="layuimini-container">
+        <div class="layuimini-main">
+            <div class="layui-form layuimini-form" lay-filter="adminform">
+                <div class="layui-form-item layui-hide">
+                    <label class="layui-form-label required">类型名称</label>
+                    <div class="layui-input-block">
+                        <input type="text" id="title" name="title" autocomplete="off" lay-verify="required" placeholder="请输入" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item layui-hide">
+                    <label class="layui-form-label required">类型描述</label>
+                    <div class="layui-input-block">
+                        <input type="text" id="descript" name="descript" autocomplete="off" lay-verify="required" placeholder="请输入" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item layui-hide">
+                    <label class="layui-form-label required">排序</label>
+                    <div class="layui-input-block">
+                        <input type="text" id="sn" name="sn" autocomplete="off" lay-verify="required" placeholder="请输入" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item layui-hide">
+                    <button class="layui-btn site-demo-active" lay-submit id="submit" lay-filter="saveBtn">确认保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+

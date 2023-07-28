@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>康诺思腾</title>
+		<link rel="stylesheet" type="text/css" href="style/animate.min.css" />
+		<link rel="stylesheet" type="text/css" href="style/animations.css" />
+		<link rel="stylesheet" type="text/css" href="style/style.css?v1" />
+		<link rel="stylesheet" type="text/css" href="style/hsycmsAlert.min.css" />
+		<link rel="stylesheet" type="text/css" href="style/swiper.min.css" />
+
+		<link rel="stylesheet" type="text/css" href="style/font.css" />
+
+		<script src="js/jquery-3.4.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/hsycmsAlert.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/swiper.min.js" type="text/javascript" charset="utf-8"></script>
+
+		<link rel="stylesheet" href="vue/index.css">
+		<script src="vue/vue.js"></script>
+		<script src="vue/index.js"></script>
+
+		<meta name='viewport'
+			content='width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no' />
+
+		<style>
+			html,
+			body {
+				overflow: hidden;
+			}
+		</style>
+
+	</head>
+	<body>
+		<div class="NavBox"></div>
+		<div class="swiper-container h100 news" id="swiper-container1">
+			<div class="swiper-wrapper">
+				<div class="swiper-slide">
+					<div class="pr winHeight">
+
+						<div class="swiper mySwiper pa whtl0 ovh">
+							<div class="swiper-wrapper">
+								<div class="swiper-slide center"
+									style="background: url(img/banner6.jpg) no-repeat center; background-size:cover;">
+									<a href="#" class="w1200 m0aoto cfff f40">
+										康诺思腾亮相2022国际微创<br>外科大会西湖峰会
+									</a>
+								</div>
+
+							</div>
+						</div>
+
+						<div class="pa whtl0 pointernone flex alignitems_center">
+							<div class="w1200 m0aoto cfff h100 pr">
+								<div class="pa w100" style="bottom: 60px; left: 0px; ">
+									<div class="swiper-pagination"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+
+				</div>
+				<div class="swiper-slide">
+					<div class="swiper-container h100" id="Ybox2">
+						<div class="swiper-wrapper">
+							<div class="swiper-slide">
+								<div class="w1200 m0aoto">
+									<div class="h60"></div>
+									<div class="h60"></div>
+									
+									<div class="newslist">
+										<a href="Newsdis.html">
+											<div class="f18 fb">康诺思腾完成5亿元B轮融资，持续深耕手术机器人领域</div>
+											<div class="h10"></div>
+											<div class="f14" style="color: #b3b3b3;">
+												日前，创新型手术机器人技术领导者康诺思腾宣布完成5亿元B轮融资。本轮融资将主要用于手术机器人的产品研发、临床试验、上市推广、新产品布局和行业前沿技术平台的搭建，使中国及全球范围内的患者可以更快地享受到高端...
+											</div>
+											<div class="h10"></div>
+											<div class="ter">2022-04-30</div>
+										</a>
+									</div>
+									<div class="h60"></div>
+									<div class="center" id="app">
+										<el-pagination background layout="prev, pager, next" :total="1000">
+										</el-pagination>
+									</div>
+									<div class="h60"></div>
+								</div>
+								
+								<div class="" style="background: url(img/mtll.jpg) no-repeat center; background-size:cover; height: 300px; ">
+									<div class="w1200 m0aoto cfff">
+										<div class="h60"></div>
+										<div class="f24 fb">媒体联络</div>
+										<div class="h20"></div>
+										<div style="line-height: 1.8;">
+											深圳市南山区科苑南路3099号中国储能大厦<br>
+											电话：0755-86726432<br>
+											传真：0755-26661515<br>
+											邮箱：info@csrbtx.com
+										</div>
+									</div>
+								</div>
+								<div class="footerBox"></div>
+							</div>
+						</div>
+						<div class="swiper-scrollbar"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+
+
+		<script type="text/javascript">
+			$(".NavBox").load("Nav.html");
+			$(".footerBox").load("footer.html");
+			var swiper = new Swiper(".mySwiper", {
+				centeredSlides: true,
+				autoplay: {
+					delay: 2500,
+					disableOnInteraction: false,
+				},
+				pagination: {
+					el: ".swiper-pagination",
+					clickable: true,
+				},
+			});
+
+			function screenFuc() {
+				var winWidth = $(window).innerWidth();
+				var winHeight = $(window).innerHeight()
+				//var winHeight = 500
+				$(".winHeight").css({
+					"height": winHeight + "px"
+				})
+			}
+			(window.onresize = function() {
+				screenFuc();
+			})();
+
+
+			new Vue({
+				el: '#app',
+				data() {
+					return {
+						surname: ""
+					};
+				},
+				methods: {
+
+				}
+			})
+
+			$(function() {
+
+				var mySwiper1 = new Swiper('#swiper-container1', {
+					direction: 'vertical',
+					speed: 1000,
+					on: {
+						transitionEnd: function() {
+							// $("#swiper-container1>div>div.swiper-slide-active .ani").css({
+							// 	opacity: 1
+							// }).addClass("animated").removeClass(".ani")
+						},
+					},
+				});
+				var Ybox2 = new Swiper('#Ybox2', { //子swiper
+					direction: 'vertical',
+					nested: true,
+					//resistanceRatio: 0,
+					slidesPerView: 'auto',
+					freeMode: true,
+					mousewheel: {
+						sensitivity: 0.3,
+					},
+					scrollbar: {
+						el: '.swiper-scrollbar',
+					},
+				})
+
+				var flag = true;
+				var height = $(window).innerHeight();
+				var tem = 0;
+				var isFirefox = (/Firefox/i.test(navigator.userAgent)); //判断是不是火狐浏览器
+				var agent = navigator.userAgent.toLowerCase();
+				var isMac = /macintosh|mac os x/i.test(navigator.userAgent);
+				var flagout
+				$(window).on(isFirefox ? 'DOMMouseScroll' : 'mousewheel', function(e) {
+					var delta = isFirefox ? e.detail * -1 : e.originalEvent.wheelDelta;
+
+					if (!flag) {
+						return
+					}
+					clearTimeout(flagout)
+
+					var flagTimg = 1000
+					var Ybox = $("#swiper-container1>.swiper-wrapper>.swiper-slide-active>div").attr("id")
+
+					if (delta < 0) {
+						if (Ybox) {
+							if (Ybox.indexOf("Ybox") >= 0) {
+								if (Ybox2.isEnd) {
+									mySwiper1.slideNext();
+									flag = false;
+								}
+							}
+						} else {
+							mySwiper1.slideNext();
+						}
+					} else {
+						if (Ybox) {
+							if (Ybox.indexOf("Ybox") >= 0) {
+								if (Ybox2.isBeginning) {
+									mySwiper1.slidePrev();
+									flag = false;
+								}
+							}
+						} else {
+							mySwiper1.slidePrev();
+							flag = false;
+						}
+					}
+					flagout = setTimeout(() => {
+						flag = true
+					}, isMac ? 1500 : 500)
+				})
+			})
+		</script>
+	</body>
+</html>

@@ -1,0 +1,179 @@
+﻿@{
+    ViewBag.Title = "Form";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<script>
+    layui.use(['jquery', 'form', 'laydate', 'common','optimizeSelectOption'], function () {
+        var form = layui.form,
+            $ = layui.$,
+            common = layui.common,
+            laydate = layui.laydate;
+        var keyValue = $.request("keyValue");
+        //权限字段
+        common.authorizeFields('adminform');
+        var event = $.request("event");
+        wcLoading.close();
+        //此处需修改
+        //类型为时间时
+        //laydate.render({
+            //elem: '#F_Birthday'
+            //, btns: ['clear', 'now']
+            //, trigger: 'click',
+            //format: 'yyyy-MM-dd',
+        //});
+
+        $(function () {
+            initControl();
+            if (event == "edit") {
+                var Description = '@(ViewBag.Content)';
+                // editor准备好之后才可以使用
+                var editor = UE.getEditor("F_TemplateContent");
+                editor.ready(function () {
+                    editor.setContent(Description);
+                });
+                 common.ajax({
+                   url: '@(Cornerstone.Code.GlobalContext.SystemConfig.VirtualDirectory)/ContentManage/Template/GetFormJson',
+                   dataType: 'json',
+                   data: { keyValue: keyValue },
+                   async: false,
+                   success: function (data) {
+                       common.val('adminform', data);
+                    }
+               });
+           }
+           form.render();
+       });
+
+
+         function initControl() {
+            //绑定数据源
+            //类型为下拉框时
+             $("#F_TemplateMode").bindSelect({
+                url: "@(Cornerstone.Code.GlobalContext.SystemConfig.VirtualDirectory)/ContentManage/TemplateType/GetListJson",
+                id: "F_Id",
+                text: "F_TypeName",
+                search: true
+             });
+             $("#F_TemplateMode").val('@(ViewBag.TemplateTypeId)');
+        }
+                   //select验证
+        form.verify({
+            required: function (value, item) {
+                var msg = "必填项不能为空";
+                value = $.trim(value);
+                var isEmpty = !value || value.length < 1;
+                // 当前验证元素是select且为空时,将页面定位至layui渲染的select处，或自定义想定位的位置
+                if (item.tagName == 'SELECT' && isEmpty) {
+                    $("html").animate({
+                        scrollTop: $(item).siblings(".layui-form-select").offset().top - 74
+                    }, 50);
+                }
+                if (isEmpty) {
+                    return msg;
+                }
+            }
+        });
+       //监听提交
+        //form.on('select(F_TemplateMode)', function (data) {
+        //    if (data.value == "1001") {
+        //        $("#fileName").show();
+        //    }
+        //     else {
+        //        $("#fileName").hide();
+        //    }
+        //});
+       form.on('submit(saveBtn)', function (data) {
+           // 单击之后提交按钮不可选,防止重复提交
+           $('.site-demo-active').addClass('layui-btn-disabled');
+           $('.site-demo-active').attr('disabled', 'disabled');
+           var postData = $.extend(postData, data.field);
+           if (!postData["F_EnabledMark"]) postData["F_EnabledMark"] = false;
+           postData["F_TemplateContent"] = UE.getEditor('F_TemplateContent').getContentTxt();
+           common.submitForm({
+               url: event == "edit" ? "@(Cornerstone.Code.GlobalContext.SystemConfig.VirtualDirectory)/ContentManage/Template/SubmitForm?keyValue=" + keyValue : "@(Cornerstone.Code.GlobalContext.SystemConfig.VirtualDirectory)/ContentManage/Template/SubmitForm",
+               param: postData,
+               success: function () {
+                   common.reloadIframe("@(Cornerstone.Code.GlobalContext.SystemConfig.VirtualDirectory)/ContentManage/Template/Index", 'data-search-btn');
+               }
+           })
+           return false;
+       });
+   });
+</script>
+
+<body>
+    <div class="layuimini-container">
+        <div class="layuimini-main"  style="margin-bottom: 80px;">
+            <div class="layui-form layuimini-form" lay-filter="adminform">
+                <div class="layui-form-item layui-hide">
+                    <label class="layui-form-label required">模板类型</label>
+                    <div class="layui-input-block">
+                        <select id="F_TemplateMode" name="F_TemplateMode" lay-filter="F_TemplateMode" lay-search>
+                            <option value="">请选择模板类型</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-form-item layui-hide">
+                    <label class="layui-form-label required">模板名称</label>
+                    <div class="layui-input-block">
+                        <input type="text" id="F_TemplateName" name="F_TemplateName" autocomplete="off" lay-verify="required" placeholder="请输入模板名称" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item layui-hide">
+                    <label class="layui-form-label required">模板文件</label>
+                    <div class="layui-input-block">
+                        <input type="text" id="F_TemplateFile" name="F_TemplateFile" autocomplete="off" lay-verify="required" placeholder="路径以/分隔，文件名以T_开头例：(T_新闻详情.html)" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item layui-hide" id="fileName" style="display:none;">
+                    <label class="layui-form-label">生成文件名</label>
+                    <div class="layui-input-block">
+                        <input type="text" id="F_FileName" name="F_FileName" autocomplete="off" placeholder="路径以/分隔，例：(search/search.html)" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item layui-hide">
+                    <label class="layui-form-label required">选项</label>
+                    <div class="layui-input-block">
+                        <input type="checkbox" name="F_EnabledMark" id="F_EnabledMark" checked="" value="true" title="有效标识">
+                    </div>
+                </div>
+                <div class="layui-form-item layui-hide">
+                    <label class="layui-form-label required">模板内容</label>
+                    <div class="layui-input-block">
+                        <textarea id="F_TemplateContent" name="F_TemplateContent" type="text/plain" style="width:100%;height:400px;"></textarea>
+                    </div>
+                </div>
+                <div class="layui-form-item layui-hide">
+                    <label class="layui-form-label required">内容详情文件名</label>
+                    <div class="layui-input-block">
+                        <input type="text" id="F_FileContent" name="F_FileContent" autocomplete="off" placeholder="例：(Form2)" class="layui-input">
+                    </div>
+                </div>
+                <div class="form-group-bottom text-right">
+                    <div class="layui-input-block">
+                        <button class="layui-btn site-demo-active" lay-submit id="submit" lay-filter="saveBtn">确认保存</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+<link href="~/lib/ueditor/themes/default/css/ueditor.css?v=@Cornerstone.Code.GlobalContext.GetVersion()" rel="stylesheet" />
+<script type="text/javascript" charset="utf-8" src="~/lib/ueditor/ueditor.config.js?v=@Cornerstone.Code.GlobalContext.GetVersion()"></script>
+<script type="text/javascript" charset="utf-8" src="~/lib/ueditor/ueditor.all.js?v=@Cornerstone.Code.GlobalContext.GetVersion()"></script>
+<!--建议手动加在语言，避免在ie下有时因为加载语言失败导致编辑器加载失败-->
+<!--这里加载的语言文件会覆盖你在配置项目里添加的语言类型，比如你在配置项目里配置的是英文，这里加载的中文，那最后就是中文-->
+<script type="text/javascript" charset="utf-8" src="~/lib/ueditor/lang/zh-cn/zh-cn.js"></script>
+
+<script type="text/javascript">
+    // 加载 ueditor，传入的初始化参数可以覆盖掉 ueditor.config.js 中的配置
+    // 对于同一项目中使用不同的配置的 ueditor 场景非常有用
+    var ue = UE.getEditor('F_TemplateContent', {
+        initialFrameHeight: 250,
+        autoFloatEnabled: false, //取消悬浮
+        // , initialFrameWidth:796
+        zIndex: 0,
+        wordCount: false
+    });
+</script>

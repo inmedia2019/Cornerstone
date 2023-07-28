@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Cornerstone.DataBase": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}

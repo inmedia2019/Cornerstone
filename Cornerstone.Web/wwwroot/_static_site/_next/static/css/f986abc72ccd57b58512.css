@@ -1,0 +1,132 @@
+﻿body, html {
+    padding: 0;
+    margin: 0;
+    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif;
+    color: #666;
+    font-size: 16px
+}
+
+a {
+    color: inherit;
+    text-decoration: none
+}
+
+    a:hover {
+        color: #7b4dd6
+    }
+
+p {
+    margin: 0
+}
+
+* {
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    -ms-overflow-style: none;
+    overflow: -moz-scrollbars-none
+}
+
+::-webkit-scrollbar {
+    width: 0 !important
+}
+
+::-webkit-input-placeholder {
+    color: #999;
+    font-size: 14px;
+    line-height: 20px
+}
+
+::-moz-placeholder {
+    color: #999;
+    font-size: 14px;
+    line-height: 20px
+}
+
+:-ms-input-placeholder {
+    color: #999;
+    font-size: 14px;
+    line-height: 20px
+}
+
+input:-moz-placeholder {
+    color: #999;
+    font-size: 14px;
+    line-height: 20px
+}
+
+input {
+    color: #333;
+    font-size: 14px;
+    line-height: 20px
+}
+
+.ellipsis {
+    overflow: hidden;
+    text-overflow: breakAll;
+    white-space: nowrap
+}
+
+.breakAll {
+    overflow: hidden;
+    word-break: break-all
+}
+
+.section {
+    width: 1192px;
+    margin: 0 auto
+}
+
+    .section, .section .sectionL {
+        display: -moz-box;
+        display: flex;
+        -moz-box-pack: justify;
+        justify-content: space-between
+    }
+
+        .section .sectionL {
+            width: 100%;
+            overflow: hidden
+        }
+
+            .section .sectionL .column1 {
+                width: 352px;
+                margin-right: 40px;
+                flex-shrink: 0
+            }
+
+        .section.subSection .sectionL .column1 {
+            width: 127px
+        }
+
+        .section .sectionL .column2 {
+            width: 100%;
+            overflow: hidden
+        }
+
+        .section .sectionR {
+            width: 296px;
+            flex-shrink: 0;
+            margin-left: 40px;
+            overflow: hidden
+        }
+
+.globalAdaptation {
+    width: 1192px;
+    margin: 0 auto
+}
+
+.sectionLoading {
+    width: 1192px
+}
+
+@media (max-width:1280px) {
+    .globalAdaptation, .section, .sectionLoading {
+        width: 1136px
+    }
+}
+
+@media (max-width:1439px) {
+    .floatNavShow {
+        visibility: hidden
+    }
+}

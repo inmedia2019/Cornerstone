@@ -1,0 +1,120 @@
+﻿@{
+    ViewBag.Title = "Form"; 
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<script>
+    layui.use(['jquery', 'form', 'laydate', 'common','optimizeSelectOption'], function () {
+        var form = layui.form,
+            $ = layui.$,
+            common = layui.common,
+            laydate = layui.laydate;
+        var keyValue = $.request("keyValue");
+        //权限字段
+        common.authorizeFields('adminform');
+        //此处需修改
+        //类型为时间时
+        //laydate.render({
+            //elem: '#F_Birthday'
+            //, btns: ['clear', 'now']
+            //, trigger: 'click',
+            //format: 'yyyy-MM-dd',
+        //});
+
+        $(function () {
+            initControl();
+            if (!!keyValue) {
+                 common.ajax({
+                   url: '@(Cornerstone.Code.GlobalContext.SystemConfig.VirtualDirectory)/InfoManage/History/GetFormJson',
+                   dataType: 'json',
+                   data: { keyValue: keyValue },
+                   async: false,
+                   success: function (data) {
+                       common.val('adminform', data);
+                    }
+               });
+           }
+           form.render();
+       });
+       wcLoading.close();
+
+       function initControl() {
+           //此处需修改
+           //绑定数据源
+           //类型为下拉框时
+       }
+
+       //监听提交
+       form.on('submit(saveBtn)', function (data) {
+           // 单击之后提交按钮不可选,防止重复提交
+           $('.site-demo-active').addClass('layui-btn-disabled');
+           $('.site-demo-active').attr('disabled', 'disabled');
+           var postData = data.field;
+           common.submitForm({
+               url: '@(Cornerstone.Code.GlobalContext.SystemConfig.VirtualDirectory)/InfoManage/History/SubmitForm?keyValue=' + keyValue,
+               param: postData,
+               success: function () {
+                   common.parentreload('data-search-btn');
+               }
+           })
+           return false;
+       });
+
+           $("#NF-lan-en").on("click", function () {
+            var iframes = top.$(".layui-show>iframe");
+            $.get({
+                data: {"lan":"1"},
+                url: '@(Cornerstone.Code.GlobalContext.SystemConfig.VirtualDirectory)/ContentManage/Block/SetLan',
+                success: function (data) {
+                    iframes[0].src = window.location.href;
+                }
+            })
+
+        });
+
+        $("#NF-lan-cn").on("click", function () {
+            var iframes = top.$(".layui-show>iframe");
+            $.get({
+                data: {"lan":"0"},
+                url: '@(Cornerstone.Code.GlobalContext.SystemConfig.VirtualDirectory)/ContentManage/Block/SetLan',
+                success: function (data) {
+                    iframes[0].src = window.location.href;
+                }
+            })
+
+        });
+   });
+</script>
+
+<body>
+    <center>
+        <div style=" margin: 10px;">
+            <button id="NF-lan-cn" authorize="yes" class="layui-btn layui-btn-sm layui-btn-warm  " style="height:30px; padding:0 25px;" lay-submit lay-filter="lan-cn"> <i class="fa fa-flag"></i>中文版</button>
+            <button id="NF-lan-en" authorize="yes" class="layui-btn layui-btn-sm  " lay-submit style="height:30px; padding:0 25px;" lay-filter="lan-en"> <i class="fa fa-flag-checkered"></i>英文版</button>
+        </div>
+    </center>
+    <div class="layuimini-container">
+        <div class="layuimini-main">
+            <div class="layui-form layuimini-form" lay-filter="adminform">
+                <div class="layui-form-item layui-hide">
+                    <label class="layui-form-label required">名称</label>
+                    <div class="layui-input-block">
+                        <input type="hidden" id="F_LanInfoId" name="F_LanInfoId" value="">
+                        <input type="text" id="F_Name" name="F_Name" autocomplete="off" lay-verify="required" placeholder="请输入" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item layui-hide">
+                    <label class="layui-form-label required">排序</label>
+                    <div class="layui-input-block">
+                        <input type="text" id="F_Order" name="F_Order" autocomplete="off" lay-verify="required" placeholder="请输入" class="layui-input">
+                    </div>
+                </div>
+                <div class="form-group-bottom text-right">
+                    <div class="layui-input-block">
+                        <button class="layui-btn site-demo-active" lay-submit id="submit" lay-filter="saveBtn">确认保存</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+

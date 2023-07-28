@@ -1,0 +1,12 @@
+<script>
+var url=window.location.href;
+
+if(url.indexOf("code")<0)
+{
+	location.href ='https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx64c8499a56fc7b93&redirect_uri=https://mediacamp.msdchina.com.cn/index.html&response_type=code&scope=snsapi_userinfo#wechat_redirect';
+}
+else
+{
+  document.write(url);
+}
+</script>

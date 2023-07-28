@@ -1,0 +1,103 @@
+﻿@{
+    ViewBag.Title = "Details"; 
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<script>
+    layui.use(['jquery', 'form', 'laydate', 'common'], function () {
+        var form = layui.form,
+            $ = layui.$,
+            common = layui.common,
+            laydate = layui.laydate;
+        var keyValue = $.request("keyValue");
+        //权限字段
+        common.authorizeFields('adminform');
+        //此处需修改
+        //类型为时间时
+        //laydate.render({
+            //elem: '#F_Birthday'
+            //, btns: ['clear', 'now']
+            //, trigger: 'click',
+            //format: 'yyyy-MM-dd',
+        //});
+
+        $(function () {
+            initControl();
+            common.ajax({
+                url: '@(Cornerstone.Code.GlobalContext.SystemConfig.VirtualDirectory)/InfoManage/Livemessage/GetFormJson',
+                dataType: 'json',
+                data: { keyValue: keyValue },
+                async: false,
+                success: function (data) {
+                    common.val('adminform', data);
+                    common.setReadOnly('adminform');
+                    form.render();
+                 }
+            });
+       });
+       wcLoading.close();
+
+       function initControl() {
+           //此处需修改
+           //绑定数据源
+           //类型为下拉框时
+       }
+   });
+</script>
+
+<body>
+    <div class="layuimini-container">
+        <div class="layuimini-main">
+            <div class="layui-form layuimini-form" lay-filter="adminform">
+                <div class="layui-form-item layui-hide">
+                   <label class="layui-form-label required">姓名</label>
+                   <div class="layui-input-block">
+                        <input type="text" id="F_TrueName" name="F_TrueName" lay-verify="required" class="layui-input">
+                   </div>
+               </div>
+                <div class="layui-form-item layui-hide">
+                   <label class="layui-form-label required">性别</label>
+                   <div class="layui-input-block">
+                        <input type="text" id="F_Sex" name="F_Sex" lay-verify="required" class="layui-input">
+                   </div>
+               </div>
+                <div class="layui-form-item layui-hide">
+                   <label class="layui-form-label required">手机</label>
+                   <div class="layui-input-block">
+                        <input type="text" id="F_Phone" name="F_Phone" lay-verify="required" class="layui-input">
+                   </div>
+               </div>
+                <div class="layui-form-item layui-hide">
+                   <label class="layui-form-label required">媒体名称</label>
+                   <div class="layui-input-block">
+                        <input type="text" id="F_MediaName" name="F_MediaName" lay-verify="required" class="layui-input">
+                   </div>
+               </div>
+                <div class="layui-form-item layui-hide">
+                   <label class="layui-form-label required">职称</label>
+                   <div class="layui-input-block">
+                        <input type="text" id="F_JobTitle" name="F_JobTitle" lay-verify="required" class="layui-input">
+                   </div>
+               </div>
+                <div class="layui-form-item layui-hide">
+                   <label class="layui-form-label required">是否同意用户协议</label>
+                   <div class="layui-input-block">
+                        <input type="text" id="F_IsAgreeAgreement" name="F_IsAgreeAgreement" lay-verify="required" class="layui-input">
+                   </div>
+               </div>
+                <div class="layui-form-item layui-hide">
+                   <label class="layui-form-label required">是否同意收集用户行为</label>
+                   <div class="layui-input-block">
+                        <input type="text" id="F_IsAgreeActionCollect" name="F_IsAgreeActionCollect" lay-verify="required" class="layui-input">
+                   </div>
+               </div>
+                <div class="layui-form-item layui-hide">
+                   <label class="layui-form-label required">留言内容</label>
+                   <div class="layui-input-block">
+                        <input type="text" id="F_Message" name="F_Message" lay-verify="required" class="layui-input">
+                   </div>
+               </div>
+            </div>
+        </div>
+    </div>
+</body>
+

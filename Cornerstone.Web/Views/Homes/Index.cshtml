@@ -1,0 +1,250 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>@ViewBag.Info.F_SeoTitle</title>
+    @Html.Partial("~/Views/Shared/_Head.cshtml")
+    <meta name="keyword" content="@ViewBag.Info.F_SeoKeywords" />
+    <meta name="Description" content="@ViewBag.Info.F_SeoDescription" />
+</head>
+<body>
+    <div class="NavBox">
+        @Html.Partial("~/Views/Shared/_Menu.cshtml")
+    </div>
+    <div class="swiper-container h100 index" id="swiper-container1">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide">
+                <div class="pr h100 ovh" style="">
+                    <video id="sound" class="" width="100%" height="" autoplay="autoplay" muted="muted" loop="" playsinline="">
+                        <source src="@ViewBag.Info.F_Video"
+                                type="video/mp4">
+                    </video>
+
+                    <div class="pa whtl0 center pointernone">
+                        <div class="w1200 m0aoto tec">
+                            <img width="80%" src="@ViewBag.Info.F_CoverImage" alt="">
+                        </div>
+                    </div>
+
+                </div>
+                <img class="nexicon pa" src="img/nexicon.png" alt="">
+            </div>
+            <div class="swiper-slide">
+                <div class="pr h100 fadeIn animated"
+                     style="background: url(@ViewBag.Info.F_SharePic) no-repeat center; background-size:cover; position: relative; ">
+
+                    <div class="w1200 m0aoto pr h100 flex alignitems_center">
+                        <div class="">
+                            <div class="center pr" style="width: 615px; height: 284px; ">
+                                <img class="pt-page-delay200 fadeInLeft animated" width="615" 
+                                     src="@ViewBag.Info.HomePic1" alt="">
+                                <img style="position: absolute;" class="pa whtl0 pt-page-delay200 fadeInRight animated"
+                                     src="@ViewBag.Info.HomePic2" alt="">
+                                <img style="position: absolute;" class="pa whtl0 pt-page-delay200 fadeInLeft animated"
+                                     src="@ViewBag.Info.HomePic3" alt="">
+                                <img style="position: absolute;" class="pa whtl0 pt-page-delay200 fadeInRight animated"
+                                     src="@ViewBag.Info.HomePic4" alt="">
+                            </div>
+                            <div class="h30"></div>
+                            <div class="f18 fadeIn animated pt-page-delay200" style="color: #000; opacity: 0.5;">
+                               @Html.Raw(ViewBag.Info.F_ShareDes)
+                            </div>
+                            <div class="h60"></div>
+                            <div class="h30"></div>
+                            <a href="/product_center?id=1" class="but b005059 f14 fb cfff fadeIn animated pt-page-delay200">了解详情</a>
+                        </div>
+                    </div>
+
+                    <img class="pa" style="top: 0px; right: 0px; height: 100%;" src="@ViewBag.Info.F_LiveBroadcastId" alt="">
+                </div>
+            </div>
+            <div class="swiper-slide">
+                <div class="swiper-container h100" id="Ybox2">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <div class="pr winHeight" style="background: rgba(0, 80, 89, 0.05);">
+                                <div class="w1200 m0aoto pr h100 flex alignitems_center">
+                                    <div class="w100 flex justify_between">
+                                        @{
+                                            for (int i = 0; i < ViewBag.news.Count; i++)
+                                            {
+                                                if (i == 0)
+                                                {
+                                                    <a href="Newsdis/Index/@ViewBag.news[i].F_Id" target="_blank" class="animated fadeInLeft pt-page-delay200 abn3a"
+                                                       style="width: 50%; background: rgba(0, 80, 89, 0.05);">
+                                                        <div class="center">
+                                                            <img width="100%" src="@ViewBag.news[i].F_CoverImage" alt="">
+                                                        </div>
+                                                        <div style="padding: 15px 20px;">
+                                                            <div></div>
+                                                            <div class="f16">@ViewBag.news[i].F_Titile</div>
+                                                            <div class="ter">@ViewBag.news[i].F_PublishTime.ToString("yyyy.MM.dd")</div>
+                                                        </div>
+                                                    </a>
+                                                }
+
+                                            }
+                                        }
+
+                                        <div class="animated fadeInRight pt-page-delay200" style="width: 46%; ">
+                                            <ul class="abn3">
+                                                @{
+                                                    for (int i = 0; i < ViewBag.news.Count; i++)
+                                                    {
+                                                        if (i > 0)
+                                                        {
+                                                            <a href="Newsdis/Index/@ViewBag.news[i].F_Id" target="_blank">
+                                                                <div class="f16 ellipsis">@ViewBag.news[i].F_Titile</div>
+                                                               
+                                                                <div class="ter" style="color: #000; opacity: 0.5;">
+                                                                    @ViewBag.news[i].F_PublishTime.ToString("yyyy.MM.dd")
+                                                                </div>
+                                                            </a>
+                                                        }
+
+                                                    }
+                                                }
+
+                                            </ul>
+                                            <div class="ovh">
+                                                <a href="/news_center" class="but b005059 f14 fb cfff fr">查看更多</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="footerBox">
+                                @Html.Partial("~/Views/Shared/_Bottom.cshtml")
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-scrollbar"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function audioAutoPlay(id) {
+            var audio = document.getElementById(id);
+            audio.play();
+            document.addEventListener("WeixinJSBridgeReady", function () {
+                audio.play();
+            }, false);
+            document.addEventListener('YixinJSBridgeReady', function () {
+                audio.play();
+            }, false);
+        }
+
+        var userAgent = navigator.userAgent;
+        var isiOS = !!userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+        var isAndroid = userAgent.indexOf('Android') > -1 || userAgent.indexOf('Adr') > -1;
+        if (isAndroid) {
+            $("#sound").attr("poster", "https://video.play.atline.cn/7c99f6b0vodtranssh1252054921/2385c69f243791577886418433/coverBySnapshot_10_0.jpg")
+            $("#sound").attr("controls", "controls")
+        }
+        if (isiOS) {
+            $("#sound").attr("poster", "https://video.play.atline.cn/7c99f6b0vodtranssh1252054921/2385c69f243791577886418433/coverBySnapshot_10_0.jpg")
+            audioAutoPlay('sound');
+        }
+
+     
+
+        function screenFuc() {
+            var winWidth = $(window).innerWidth();
+            var winHeight = $(window).innerHeight()
+            //var winHeight = 500
+            $(".winHeight").css({
+                "height": winHeight + "px"
+            })
+        }
+        (window.onresize = function () {
+            screenFuc();
+        })();
+
+
+
+        $(function () {
+
+            var mySwiper1 = new Swiper('#swiper-container1', {
+                direction: 'vertical',
+                //swipeHandler: '.swipe-handler',
+                speed: 700,
+                on: {
+                    transitionStart: function () {
+                        if (mySwiper1.activeIndex == 0) {
+                            $(".Navigation").removeClass("on")
+                        } else {
+                            $(".Navigation").addClass("on")
+                        }
+                    },
+                },
+            });
+            var Ybox2 = new Swiper('#Ybox2', { //子swiper
+                direction: 'vertical',
+                nested: true,
+                //resistanceRatio: 0,
+                slidesPerView: 'auto',
+                freeMode: true,
+                mousewheel: {
+                    sensitivity: 0.3,
+                },
+                scrollbar: {
+                    el: '.swiper-scrollbar',
+                    draggable: true,
+                    snapOnRelease: false,
+                },
+            })
+
+            var flag = true;
+            var height = $(window).innerHeight();
+            var tem = 0;
+            var isFirefox = (/Firefox/i.test(navigator.userAgent)); //判断是不是火狐浏览器
+            var agent = navigator.userAgent.toLowerCase();
+            var isMac = /macintosh|mac os x/i.test(navigator.userAgent);
+
+            var flagout
+            $(window).on(isFirefox ? 'DOMMouseScroll' : 'mousewheel', function (e) {
+                var delta = isFirefox ? e.detail * -1 : e.originalEvent.wheelDelta;
+
+                console.log(delta)
+                if (!flag) {
+                    return
+                }
+                clearTimeout(flagout)
+                var Ybox = $("#swiper-container1>.swiper-wrapper>.swiper-slide-active>div").attr("id")
+
+                if (delta < 0) {
+                    if (Ybox) {
+                        if (Ybox.indexOf("Ybox") >= 0) {
+                            if (Ybox2.isEnd) {
+                                mySwiper1.slideNext();
+                                flag = false;
+                            }
+                        }
+                    } else {
+                        mySwiper1.slideNext();
+                        flag = false;
+                    }
+                } else {
+                    if (Ybox) {
+                        if (Ybox.indexOf("Ybox") >= 0) {
+                            if (Ybox2.isBeginning) {
+                                mySwiper1.slidePrev();
+                                flag = false;
+                            }
+                        }
+                    } else {
+                        mySwiper1.slidePrev();
+                        flag = false;
+                    }
+                }
+                flagout = setTimeout(() => {
+                    flag = true
+                }, isMac ? 1500 : 500)
+            })
+        })
+    </script>
+</body>
+</html>

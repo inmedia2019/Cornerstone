@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>康诺思腾</title>
+		<link rel="stylesheet" type="text/css" href="style/animate.min.css" />
+		<link rel="stylesheet" type="text/css" href="style/animations.css" />
+		<link rel="stylesheet" type="text/css" href="style/style.css?v1" />
+		<link rel="stylesheet" type="text/css" href="style/hsycmsAlert.min.css" />
+		<link rel="stylesheet" type="text/css" href="style/swiper.min.css" />
+
+		<link rel="stylesheet" type="text/css" href="style/font.css" />
+
+		<script src="js/jquery-3.4.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/hsycmsAlert.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/swiper.min.js" type="text/javascript" charset="utf-8"></script>
+		
+		<script src="js/jquery.cookie.js" type="text/javascript" charset="utf-8"></script>
+
+		<link rel="stylesheet" href="vue/index.css">
+		<script src="vue/vue.js"></script>
+		<script src="vue/index.js"></script>
+
+		<meta name='viewport'
+			content='width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no' />
+
+		<style>
+			html,
+			body {
+				overflow: hidden;
+				background: #EFF1F3;
+			}
+		</style>
+
+	</head>
+	<body>
+		<div class="NavBox"></div>
+		<div class="swiper-container h100" id="Ybox2">
+			<div class="swiper-wrapper">
+				<div class="swiper-slide train">
+					<div id="app" class="dn">
+						<div v-if="step==0" style="background: #005059;">
+							<div class="w1200 m0aoto winHeight center" style="min-height: 550px;">
+								<div class="">
+									<div class="h60"></div>
+									<div class="bfff flex alignitems_center" v-if="Signstep==0">
+										<div class="center">
+											<img width="260" src="img/traint1.jpg" alt="">
+										</div>
+										<div class="" style=" padding: 0px 40px; width: 275px;">
+											<div class="c005059 fb f20 tec">登录账号</div>
+											<div class="h30"></div>
+											<div class="pr" style="">
+												<el-input v-model="from.phone" placeholder="请输入手机号"></el-input>
+												<div class="center pa"
+													style="top: 0px; left: 0px; bottom: 0px; width: 50px;">
+													<img height="16" src="img/yhm.png" alt="">
+												</div>
+											</div>
+											<div class="h20"></div>
+											<div class="pr" style="">
+												<el-input v-model="from.pass" show-password placeholder="请输入密码">
+												</el-input>
+												<div class="center pa"
+													style="top: 0px; left: 0px; bottom: 0px; width: 50px;">
+													<img height="20" src="img/mima.png" alt="">
+												</div>
+											</div>
+											<div class="h20"></div>
+											<div class="flex justify_end">
+												<div class="cursor"
+													style=" color: #979797; border-bottom: #979797 solid 1px; "
+													@click="Signstep=2">忘记密码？
+												</div>
+											</div>
+											<div class="h30"></div>
+											<div class="flex alignitems_end justify_between">
+												<div class="" style=" color: #979797; margin-bottom: 5px; ">
+													还没有注册账号，<span class="c005059 cursor"
+														style="border-bottom: #005059 solid 1px;"
+														@click="Signstep=1">立即注册</span>
+												</div>
+												<div class="b005059 cfff center cursor"
+													style="width: 80px; height: 40px;" @click="butSign">登录
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="bfff flex alignitems_center" v-if="Signstep>0">
+										<div class="center">
+											<img width="260" src="img/traint2.jpg" alt="">
+										</div>
+										<div class="" style=" padding: 0px 40px; width: 275px;">
+											<div class="c005059 fb f20 tec">{{Signstep==1?'注册账号':'重置密码'}}</div>
+											<div class="h30"></div>
+											<div class="pr" style="">
+												<el-input v-model="from2.phone" placeholder="请输入手机号"></el-input>
+												<div class="center pa"
+													style="top: 0px; left: 0px; bottom: 0px; width: 50px;">
+													<img height="16" src="img/yhm.png" alt="">
+												</div>
+											</div>
+											<div class="h20"></div>
+											<div class="pr" style="">
+												<el-input v-model="from2.pass" show-password placeholder="请输入密码">
+												</el-input>
+												<div class="center pa"
+													style="top: 0px; left: 0px; bottom: 0px; width: 50px;">
+													<img height="20" src="img/mima.png" alt="">
+												</div>
+											</div>
+											<div class="h20"></div>
+											<div class="pr" style="">
+												<el-input v-model="from2.pass2" show-password placeholder="请再次输入密码">
+												</el-input>
+												<div class="center pa"
+													style="top: 0px; left: 0px; bottom: 0px; width: 50px;">
+													<img height="20" src="img/mima.png" alt="">
+												</div>
+											</div>
+											<div class="h20"></div>
+											<div class="pr" style="">
+												<el-input v-model="from2.code" placeholder="请输入邀请码"></el-input>
+												<div class="center pa"
+													style="top: 0px; left: 0px; bottom: 0px; width: 50px;">
+													<img height="18" src="img/yqm.png" alt="">
+												</div>
+											</div>
+											<div class="h60"></div>
+											<div class="h60"></div>
+											<div class="flex alignitems_end justify_between">
+												<div class="" style=" color: #979797; margin-bottom: 5px; ">
+													已有帐号，立即 <span class="c005059 cursor"
+														style="border-bottom: #005059 solid 1px;"
+														@click="Signstep=0">登录账号</span>
+												</div>
+												<div class="b005059 cfff center cursor"
+													style="width: 80px; height: 40px;" @click="butRegister">{{Signstep==1?'注册':'确定'}}
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div v-if="step==1" class="pr"
+							style="background: url(img/traint3.jpg) no-repeat center; background-size: cover;">
+							<div class="w1200 m0aoto winHeight center">
+								<div class="cfff w100">
+									<div class="fb f28">CSR学院 - 机器人操作培训</div>
+									<div class="h60"></div>
+									<div class="f16" style="line-height: 1.8;">　　Demo文字：Sentire
+										同时减轻了助手及护士的工作压力，提供了多种助力辅助功能，简单友好的 UI
+										交互，完善的引导系统和底层安全保障，让助手及护士可以更快速地完成设备的部署和布孔，器械的安装、更换及管理，进一步调高了手术的整体效率。</div>
+									<div class="h60"></div>
+									<div class="flex justify_end">
+										<div class="b005059 center f16 cursor"
+											style="border: #fff solid 2px; width: 200px; height: 50px;" @click="buttrain">进入培训</div>
+									</div>
+								</div>
+							</div>
+							<div class="pa whtl0 center" style="background: rgba(0, 0, 0, 0.8);" v-if="isBoxexamineShow">
+								<div class="bfff" style="padding: 50px 50px 30px 50px;">
+									<div class="center">
+										<img width="60" src="img/traint4.png" alt="">
+									</div>
+									<div class="h20"></div>
+									<div class="h10"></div>
+									<div class="f16 tec" style="color: #979797;">您的注册账后台号尚未审核，请耐心等待<br>或联系您的销售人员尽快安排审核
+									</div>
+									<div class="h20"></div>
+									<div class="h10"></div>
+									<div class="b005059 center f16 cursor m0aoto cfff"
+										style=" width: 150px; height: 48px; " @click="isBoxexamineShow=false">确定</div>
+								</div>
+							</div>
+						</div>
+						<div v-if="step==2" class="pr">
+							<div class="h60"></div>
+							<div class="b005059">
+								<div class="w1200 m0aoto cfff flex justify_end alignitems_center h40">
+									<div>账户：18766523621</div>
+									<div @click="butsignout" class="cursor" style="margin-left: 20px; margin-right: 10px;">
+										<span class="el-dropdown-link">
+											退出登录<i class="el-icon-arrow-right el-icon--right"></i>
+										</span>
+									</div>
+								</div>
+							</div>
+							<div class="w1200 m0aoto">
+								<div class="pr winHeights flex justify_end">
+									<div class="b005059 cfff h100 pa tec" style="top: 0px; left: -20px; width: 150px; padding-right: 50px; z-index: 3; ">
+										<div class="h20"></div>
+										<div class="tec fb f20">
+											培训资料
+										</div>
+										<div class="h20"></div>
+										<div class="trainlist f16 m0aoto">
+											<div class="center cursor on">标签一</div>
+											<div class="center cursor">标签二</div>
+											<div class="center cursor">标签三</div>
+											<div class="center cursor">标签四</div>
+											<div class="center cursor">标签五</div>
+											<div class="center cursor">标签六</div>
+											<div class="center cursor">标签七</div>
+											<div class="center cursor">标签八</div>
+										</div>
+									</div>
+									<div class="b005059 cfff h100 pa tec" style="top: 0px; left: -100%; width: 100%; ">
+
+									</div>
+									<div class="" style="width: calc(100% - 190px); padding-top: 20px; ">
+										<el-row :gutter="12" style="margin-right: 6px;">
+											<el-col class="cursor" :span="8" v-for="(o, index) in 9"
+												style="padding: 0px 0px 0px 20px; margin-bottom: 20px; ">
+												<el-card shadow="hover" :body-style="{ padding: '0px' }">
+													<div @click="butPlayVideo()">
+														<div class="center"
+															style="background: url(img/videobg.jpg) no-repeat center; background-size: cover; height: 150px;">
+															<img width="30" src="img/play.png" alt="">
+														</div>
+														<div style="height: 77px;">
+															<div class="h5"></div>
+															<div class="ellipsis" style="padding: 8px 15px;">
+																第一代多孔腹腔镜手术机器人实操腔镜手术机器人实操腔镜手术机器人实操腔镜手术机器人实操</div>
+															<div class="h5"></div>
+															<div class="cfff center h30" v-if="o%2==0"
+																style="background: rgba(0, 80, 89, 0.2); width: 100px;">
+																已观看
+															</div>
+														</div>
+													</div>
+												</el-card>
+											</el-col>
+										</el-row>
+										<div class="h60"></div>
+										<div class="center">
+											<el-pagination background layout="prev, pager, next" :total="1000">
+											</el-pagination>
+										</div>
+										<div class="h60"></div>
+									</div>
+								</div>
+							</div>
+							<div class="pa whtl0 center" style="background: rgba(0, 0, 0, 0.8);" v-if="isBoxvideoShow">
+								<div class="bfff pr bor6" style="padding: 20px;">
+									<div @click="isBoxvideoShow=false" class="pa cursor" style="bottom: -80px; left: 50%; margin-left: -25px; ">
+										<svg viewBox="0 0 1024 1024" width="40" height="40">
+											<path
+												d="M512 960c-247.039484 0-448-200.960516-448-448S264.960516 64 512 64 960 264.960516 960 512 759.039484 960 512 960zM512 128.287273c-211.584464 0-383.712727 172.128262-383.712727 383.712727 0 211.551781 172.128262 383.712727 383.712727 383.712727 211.551781 0 383.712727-172.159226 383.712727-383.712727C895.712727 300.415536 723.551781 128.287273 512 128.287273z"
+												fill="#ffffff" p-id="3842" data-spm-anchor-id="a313x.7781069.0.i0"
+												class="selected"></path>
+											<path
+												d="M557.05545 513.376159l138.367639-136.864185c12.576374-12.416396 12.672705-32.671738 0.25631-45.248112s-32.704421-12.672705-45.248112-0.25631l-138.560301 137.024163-136.447897-136.864185c-12.512727-12.512727-32.735385-12.576374-45.248112-0.063647-12.512727 12.480043-12.54369 32.735385-0.063647 45.248112l136.255235 136.671523-137.376804 135.904314c-12.576374 12.447359-12.672705 32.671738-0.25631 45.248112 6.271845 6.335493 14.496116 9.504099 22.751351 9.504099 8.12794 0 16.25588-3.103239 22.496761-9.247789l137.567746-136.064292 138.687596 139.136568c6.240882 6.271845 14.432469 9.407768 22.65674 9.407768 8.191587 0 16.352211-3.135923 22.591372-9.34412 12.512727-12.480043 12.54369-32.704421 0.063647-45.248112L557.05545 513.376159z"
+												fill="#ffffff" p-id="3843" data-spm-anchor-id="a313x.7781069.0.i1"
+												class="selected"></path>
+										</svg>
+									</div>
+									<div class="center">
+										<video controls width="700"
+											src="https://video.play.atline.cn/7c99f6b0vodtranssh1252054921/2385c69f243791577886418433/v.f100080.mp4"></video>
+									</div>
+									<div class="f16" style="padding: 20px 0px 0px 0px;">
+										第一代多孔腹腔镜手术机器人实操腔镜手术机器人实操腔镜手术机器人实操腔镜手术机器人实操
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="footerBox"></div>
+				</div>
+			</div>
+			<div class="swiper-scrollbar"></div>
+		</div>
+		<script type="text/javascript">
+			$(".NavBox").load("Nav.html");
+			$(".footerBox").load("footer.html");
+
+			function screenFuc() {
+				var winWidth = $(window).innerWidth();
+				var winHeight = $(window).innerHeight()
+				//var winHeight = 500
+				$(".winHeight").css({
+					"height": winHeight + "px"
+				})
+
+				$(".winHeights").css({
+					"min-height": (winHeight - 90) + "px"
+				})
+			}
+			(window.onresize = function() {
+				screenFuc();
+			})();
+
+			new Vue({
+				el: '#app',
+				data() {
+					return {
+						surname: "",
+						input: "",
+						step: 0,
+						Signstep: 0,
+						from: {
+							phone: "",
+							pass: ""
+						},
+						from2: {
+							phone: "",
+							pass: "",
+							pass2: "",
+							code: ""
+						},
+						isBoxexamineShow:false,
+						isBoxvideoShow:false,
+						details:{
+							isexamine:true
+						},
+						columnList:[],
+						
+					};
+				},
+				created() {
+					var information = $.cookie("information")
+					if(information){
+						this.step=1
+						console.log(information)
+					}
+				},
+				methods: {
+					butSign() {
+						if (this.from.phone == "") {
+							this.$message.error('请输入手机号！');
+							return
+						}
+						if (this.from.pass == "") {
+							this.$message.error('请输入密码！');
+							return
+						}
+						const loading = this.$loading({
+							lock: true,
+							text: 'Loading',
+							spinner: 'el-icon-loading',
+							background: 'rgba(0, 0, 0, 0.7)'
+						});
+						setTimeout(() => {
+							loading.close();
+							this.step=1
+							
+							var date = new Date();
+							date.setTime(date.getTime()+(60 * 1000 *60 *24));
+							
+							$.cookie("information",this.from.phone,{ expires:date});
+							
+							if(!this.details.isexamine){
+								this.isBoxexamineShow=true
+							}
+						}, 2000);
+					},
+					butRegister(){
+						if (this.from2.phone == "") {
+							this.$message.error('请输入手机号！');
+							return
+						}
+						if (this.from2.pass == "") {
+							this.$message.error('请输入密码！');
+							return
+						}
+						if (this.from2.pass2 == "") {
+							this.$message.error('请再次输入密码！');
+							return
+						}
+						if(this.from2.pass!=this.from2.pass2){
+							this.$message.error('两次密码不一致，请重新输入！');
+							return
+						}
+						if (this.from2.code == "") {
+							this.$message.error('请输入邀请码！');
+							return
+						}
+						const loading = this.$loading({
+							lock: true,
+							text: 'Loading',
+							spinner: 'el-icon-loading',
+							background: 'rgba(0, 0, 0, 0.7)'
+						});
+						setTimeout(() => {
+							loading.close();
+							this.Signstep=0
+							this.$message({
+								message: '注册成功',
+								type: 'success'
+							});
+						}, 2000);
+					},
+					buttrain(){
+						if(!this.details.isexamine){
+							this.isBoxexamineShow=true
+						}else{
+							this.step=2
+						}
+					},
+					butPlayVideo(){
+						this.isBoxvideoShow=true
+					},
+					butsignout(){
+						this.step=0
+					}
+				}
+			})
+
+			$(function() {
+				$("#app").show()
+				var Ybox2 = new Swiper('#Ybox2', { //子swiper
+					direction: 'vertical',
+					nested: true,
+					//resistanceRatio: 0,
+					slidesPerView: 'auto',
+					freeMode: true,
+					mousewheel: {
+						sensitivity: 0.3,
+					},
+					scrollbar: {
+						el: '.swiper-scrollbar',
+					},
+				})
+			})
+		</script>
+	</body>
+</html>

@@ -1,0 +1,91 @@
+﻿@{
+    ViewBag.Title = "Details"; 
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<script>
+    layui.use(['jquery', 'form', 'laydate', 'common'], function () {
+        var form = layui.form,
+            $ = layui.$,
+            common = layui.common,
+            laydate = layui.laydate;
+        var keyValue = $.request("keyValue");
+        //权限字段
+        common.authorizeFields('adminform');
+        //此处需修改
+        //类型为时间时
+        //laydate.render({
+            //elem: '#F_Birthday'
+            //, btns: ['clear', 'now']
+            //, trigger: 'click',
+            //format: 'yyyy-MM-dd',
+        //});
+
+        $(function () {
+            initControl();
+            common.ajax({
+                url: '@(Cornerstone.Code.GlobalContext.SystemConfig.VirtualDirectory)/InfoManage/Contactinfo/GetFormJson',
+                dataType: 'json',
+                data: { keyValue: keyValue },
+                async: false,
+                success: function (data) {
+                    common.val('adminform', data);
+                    common.setReadOnly('adminform');
+                    form.render();
+                 }
+            });
+       });
+       wcLoading.close();
+
+       function initControl() {
+           //此处需修改
+           //绑定数据源
+           //类型为下拉框时
+       }
+   });
+</script>
+
+<body>
+    <div class="layuimini-container">
+        <div class="layuimini-main">
+            <div class="layui-form layuimini-form" lay-filter="adminform">
+                <div class="layui-form-item layui-hide">
+                   <label class="layui-form-label required">F_Name</label>
+                   <div class="layui-input-block">
+                        <input type="text" id="F_Name" name="F_Name" lay-verify="required" class="layui-input">
+                   </div>
+               </div>
+                <div class="layui-form-item layui-hide">
+                   <label class="layui-form-label required">F_Order</label>
+                   <div class="layui-input-block">
+                        <input type="text" id="F_Order" name="F_Order" lay-verify="required" class="layui-input">
+                   </div>
+               </div>
+                <div class="layui-form-item layui-hide">
+                   <label class="layui-form-label required">F_ChannelId</label>
+                   <div class="layui-input-block">
+                        <input type="text" id="F_ChannelId" name="F_ChannelId" lay-verify="required" class="layui-input">
+                   </div>
+               </div>
+                <div class="layui-form-item layui-hide">
+                   <label class="layui-form-label required">F_ImageUrl</label>
+                   <div class="layui-input-block">
+                        <input type="text" id="F_ImageUrl" name="F_ImageUrl" lay-verify="required" class="layui-input">
+                   </div>
+               </div>
+                <div class="layui-form-item layui-hide">
+                   <label class="layui-form-label required">F_ParentId</label>
+                   <div class="layui-input-block">
+                        <input type="text" id="F_ParentId" name="F_ParentId" lay-verify="required" class="layui-input">
+                   </div>
+               </div>
+                <div class="layui-form-item layui-hide">
+                   <label class="layui-form-label required">F_FrontLink</label>
+                   <div class="layui-input-block">
+                        <input type="text" id="F_FrontLink" name="F_FrontLink" lay-verify="required" class="layui-input">
+                   </div>
+               </div>
+            </div>
+        </div>
+    </div>
+</body>
+

@@ -1,0 +1,983 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>education_and_training</title>
+    @Html.Partial("~/Areas/en/Views/Shared/_Head.cshtml")
+    @*<meta name="keyword" content="@ViewBag.Info.F_SeoKeywords" />
+        <meta name="Description" content="@ViewBag.Info.F_SeoDescription" />*@
+    <script src="/js/jquery.pagination.js?v=1" type="text/javascript" charset="utf-8"></script>
+    <script src="/js/jquery.cookie.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/js/city.js" type="text/javascript" charset="utf-8"></script>
+    <style>
+        html,
+        body {
+            background: #EFF1F3;
+            overflow: auto
+        }
+
+        .b666666 {
+            background: #b9b9b9;
+        }
+    </style>
+</head>
+<body class="en">
+    <div class="NavBox">
+        @Html.Partial("~/Areas/en/Views/Shared/_Menu.cshtml")
+    </div>
+    <div id="app" class="dn train">
+        <div v-if="step==0" :style="{'background':Signstep==1?'#fff':'url(/img/trainbg0.jpg)','background-size':'cover'}">
+            <div class="w1200 m0aoto winHeight flex justify_end alignitems_center" style="min-height: 550px;">
+                <div class="">
+                    <div class="h60"></div>
+                    <div class="bfff flex alignitems_center" style="height: 400px;" v-if="Signstep==0">
+                        <!-- <div class="center">
+                        <img width="260" src="img/traint1.jpg" alt="">
+                    </div> -->
+                        <div class="" style=" padding: 0px 40px; width: 275px;">
+                            <div class="c005059 fb f20 tec">Account</div>
+                            <div class="h30"></div>
+                            <div class="pr" style="">
+                                <el-input v-model="form.phone" :maxlength="11" placeholder="enter your username (phone)"></el-input>
+                                <div class="center pa"
+                                     style="top: 0px; left: 0px; bottom: 0px; width: 50px;">
+                                    <img height="16" src="/img/yhm.png" alt="">
+                                </div>
+                            </div>
+                            <div class="h20"></div>
+                            <div class="pr" style="">
+                                <el-input v-model="form.pass" show-password placeholder="Please enter password">
+                                </el-input>
+                                <div class="center pa"
+                                     style="top: 0px; left: 0px; bottom: 0px; width: 50px;">
+                                    <img height="20" src="/img/mima.png" alt="">
+                                </div>
+                            </div>
+                            <div class="h20"></div>
+                            <div class="flex justify_end">
+                                <div class="cursor"
+                                     style=" color: #979797; border-bottom: #979797 solid 1px; "
+                                     @@click="Signstep=2">
+                                    forgot password？
+                                </div>
+                            </div>
+                            <div class="h30"></div>
+                            <div class="flex alignitems_end justify_between">
+                                <div class="" style=" color: #979797; margin-bottom: 5px; ">
+                                    I haven't registered an account yet，<span class="c005059 cursor"
+                                                                              style="border-bottom: #005059 solid 1px;"
+                                                                              @@click="Signstep=1">Register Now</span>
+                                </div>
+                                <div class="b005059 cfff center cursor"
+                                     style="width: 80px; height: 40px;" @@click="butSign">
+                                    Login
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bfff" style="padding: 40px 0px;" v-if="Signstep==1">
+                        <div class="c005059 fb f20 tec">Register an account</div>
+                        <div class="h40"></div>
+                        <div class="register flex" style="flex-wrap: wrap;">
+                            <div><el-input v-model="form3.trueName" placeholder="*name"></el-input></div>
+                            <div><el-input v-model="form3.phone" :maxlength="11" placeholder="*user name（phone）"></el-input></div>
+                            <div><el-input v-model="form3.companyName" placeholder="*Company"></el-input></div>
+                            <div>
+                                <el-cascader :props="props"
+                                             v-model="form3.surname"
+                                             :options="city" placeholder="*province" style="width: 100%;"></el-cascader>
+                            </div>
+                            <div>
+                                <el-select v-model="form3.department" placeholder="*department"
+                                           style="width: 100%;">
+                                    @{
+                                        for (int i = 0; i < ViewBag.Department.Count; i++)
+                                        {
+                                        <el-option label="@ViewBag.Department[i].F_Name" value="@ViewBag.Department[i].F_Name"></el-option>
+
+                                        }
+                                    }
+                                    @*<el-option label="产品信息1" value="产品信息1"></el-option>*@
+
+                                </el-select>
+                            </div>
+                            <div><el-input v-model="form3.email" placeholder="*email"></el-input></div>
+                            <div><el-input v-model="form3.password" placeholder="*initial password"></el-input></div>
+                            <div><el-input v-model="form3.ConfirmPassword" placeholder="*confirm password"></el-input></div>
+                            <div>
+                                <el-select v-model="form3.experience" placeholder="past experience"
+                                           style="width: 100%;">
+                                    @{
+                                        for (int i = 0; i < ViewBag.History.Count; i++)
+                                        {
+                                        <el-option label="@ViewBag.History[i].F_Name" value="@ViewBag.History[i].F_Name"></el-option>
+
+                                        }
+                                    }
+                                </el-select>
+                            </div>
+                            <div class="pr">
+                                <el-input maxlength="6" v-model="form3.Code" placeholder="SMS verification code"></el-input>
+                                <div class="pa b005059 cfff center cursor" :class="countdown2==60?'':'b666666'" @@click="butCode2" style="bottom: 0px; right: 0px; top: 0px; width: 100px; z-index: 3;">
+                                    {{countdown2==60?'send code':countdown2+'S'}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="h10"></div>
+                        <div class="flex alignitems_center cursor" style="color: #979797;">
+                            <div class="center b005059 bor4 cfff" style="width: 16px; height: 16px; margin-right: 5px; ">
+                                <i class="el-icon-check"></i>
+                            </div>
+                            I have read and agree to this website<a class="c005059" href="/en/Newsdis/Index/99fdbd51-24e3-4c36-9014-e65e23840b5c" target="_blank" style="border-bottom: #005059 solid 1px;">《privacy statement》</a>term
+                        </div>
+                        <div class="h20"></div>
+                        <div class="flex alignitems_end justify_end">
+                            <div class="" style=" color: #979797; margin-bottom: 5px; ">
+                                Existing account，now <span class="c005059 cursor"
+                                                           style="border-bottom: #005059 solid 1px;"
+                                                           @@click="Signstep=0">Login account</span>
+                            </div>
+                            <div class="w10 h1"></div>
+                            <div class="w10 h1"></div>
+                            <div class="cfff center cursor"
+                                 style="width: 80px; height: 40px; background: #F0EFEF; color: #979797; " @@click="Signstep=0">
+                                Back
+                            </div>
+                            <div class="w10 h1"></div>
+                            <div class="w10 h1"></div>
+                            <div class="b005059 cfff center cursor"
+                                 style="width: 80px; height: 40px;" @@click="logon">
+                                Register
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bfff flex alignitems_center" style="height: 540px;" v-if="Signstep==2">
+
+                        <div class="" style=" padding: 0px 40px; width: 275px;">
+                            <div class="c005059 fb f20 tec">Reset password</div>
+                            <div class="h30"></div>
+                            <div class="pr" style="">
+                                <el-input v-model="form2.phone" :maxlength="11" placeholder="Please enter your username (phone number)"></el-input>
+                                <div class="center pa"
+                                     style="top: 0px; left: 0px; bottom: 0px; width: 50px;">
+                                    <img height="16" src="/img/yhm.png" alt="">
+                                </div>
+                            </div>
+                            <div class="h20"></div>
+                            <div class="pr" style="">
+                                <el-input v-model="form2.password" show-password placeholder="Please enter the password">
+                                </el-input>
+                                <div class="center pa"
+                                     style="top: 0px; left: 0px; bottom: 0px; width: 50px;">
+                                    <img height="20" src="/img/mima.png" alt="">
+                                </div>
+                            </div>
+                            <div class="h20"></div>
+                            <div class="pr" style="">
+                                <el-input v-model="form2.ConfirmPassword" show-password placeholder="Please enter the password again">
+                                </el-input>
+                                <div class="center pa"
+                                     style="top: 0px; left: 0px; bottom: 0px; width: 50px;">
+                                    <img height="20" src="/img/mima.png" alt="">
+                                </div>
+                            </div>
+                            <div class="h20"></div>
+                            <div class="pr" style="">
+                                <el-input maxlength="6" v-model="form2.Code" placeholder="SMS verification code"></el-input>
+                                <div class="pa b005059 cfff center cursor" :class="countdown==60?'':'b666666'" @@click="butCode" style="bottom: 0px; right: 0px; top: 0px; width: 100px; z-index: 3;">
+                                    {{countdown==60?'send code':countdown+'S'}}
+                                </div>
+                                <div class="center pa"
+                                     style="top: 0px; left: 0px; bottom: 0px; width: 50px;">
+                                    <img height="18" src="/img/yqm.png" alt="">
+                                </div>
+                            </div>
+                            <div class="h60"></div>
+                            <div class="h60"></div>
+                            <div class="flex alignitems_end justify_between">
+                                <div class="" style=" color: #979797; margin-bottom: 5px; ">
+                                    Existing account, now <span class="c005059 cursor"
+                                                                style="border-bottom: #005059 solid 1px;"
+                                                                @@click="Signstep=0">Login account</span>
+                                </div>
+                                <div class="b005059 cfff center cursor"
+                                     style="width: 80px; height: 40px;" @@click="butResetting">
+                                    Sure
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div v-if="step==1" class="pr"
+             style="background: #EFF1F3;">
+            <div class="w1200 m0aoto winHeight center">
+                <div class="w100">
+                    <div class="h60"></div>
+                    <div class="f24 c005059">Kangnosten Robot Surgery Training System</div>
+                    <div class="h40"></div>
+                    <div class="flex alignitems_end justify_between traSur cfff">
+                        <div class="center cursor" :class="traSurInx==0?'on':''" @@click="traSurInx=0">Theoretical learning stage</div>
+                        <img width="40" src="/img/traint6.png" alt="">
+                        <div class="center cursor" :class="traSurInx==1?'on':''" @@click="traSurInx=1">Simulation operation stage</div>
+                        <img width="40" src="/img/traint6.png" alt="">
+                        <div class="center cursor" :class="traSurInx==2?'on':''" @@click="traSurInx=2">Animal experiment stage</div>
+                        <img width="40" src="/img/traint6.png" alt="">
+                        <div class="center cursor" :class="traSurInx==3?'on':''" @@click="traSurInx=3">Clinical practice stage</div>
+                    </div>
+                    <div class="traSurNr" style="height:500px; line-height: 1.8;  overflow-y: auto; background: url(/img/traint5.jpg) no-repeat center; background-size:cover;">
+                        <div class="" style="padding: 50px; ">
+                            <div class="" v-if="traSurInx==0">
+                                <span class="f16">Theoretical learning stage: Understand the basic functions and working principles of surgical robots</span>
+                                <br><br><strong>Training objectives：</strong>Understand product design and component names, be familiar with equipment standard operating procedures
+                                <br><strong>For the crowd：</strong>A team interested in conducting robotic surgery
+                                <br><strong>Training duration：</strong>0.5 days
+                                <br><strong>Place：</strong>Certified training center
+                                <br><strong>Training format：</strong>Theoretical teaching
+                                <br><strong>Training instructor：</strong>Connor Teng Internal Certified Lecturer
+                                <br><strong>Content：</strong>Product design principles and names of various components, basic working principles, equipment preparation and debugging connection, operating room layout, equipment cleaning and instrument management, equipment management and storage
+                                <br><strong>Training focus：</strong>
+                                <br><strong>Practitioner：</strong>Understand product design principles and surgical procedures
+                                <br><strong>assistant：</strong>Understand product design principles and surgical procedures
+                                <br><strong>Operating Room Nurse：</strong>Basic principle and preparation process of the product
+                                <br><strong>Advanced condition：</strong>Complete theoretical learning and pass assessment
+                            </div>
+                            <div class="" v-if="traSurInx==1">
+                                <span class="f16">Simulation operation stage: Master the basic operating skills and cooperation of robots in a simulated environment</span>
+                                <br><br><strong>Training objectives：</strong>Familiar with basic operations such as preoperative preparation, disinfection, debugging, and various basic skills in robotic surgery
+                                <br><strong>For the crowd：</strong>A surgical team that has completed theoretical training and needs to master the basic skills of surgical robots
+                                <br><strong>Training duration：</strong>0.5 days
+                                <br><strong>Place：</strong>Certified training center
+                                <br><strong>Training format：</strong>Simulator Operation Exercise
+                                <br><strong>Training instructor：</strong>Connor Teng Internal Certified Lecturer
+                                <br><strong>Content：</strong>Operating room layout of equipment, equipment connection and aseptic preparation, patient positioning and surgical approach planning, patient surgical platform docking and instrument placement, surgical operation skills: mirror operation skills, hand cooperation and precise positioning, cutting and suturing knots, and energy instrument use
+                                <br><strong>Training focus：</strong>
+                                <br><strong>Practitioner：</strong>Basic operational skills
+                                <br><strong>assistant：</strong>Surgical cooperation and preparation of approach
+                                <br><strong>Operating Room Nurse：</strong>Equipment connection and sterile preparation
+                            </div>
+                            <div class="" v-if="traSurInx==2">
+                                <span class="f16">Animal experiment stage: Improving surgical skills and team cooperation ability in animal experiments</span>
+                                <br><br><strong>Training objectives：</strong>Classify according to specific specialties, simulate the entire process of clinical surgery, and master relevant skills
+                                <br><strong>For the crowd：</strong>A robot surgery team that has completed basic operational training and requires specialized surgical skills simulation exercises through animal experiments
+                                <br><strong>Training duration：</strong>1 day
+                                <br><strong>Place：</strong>Certified training center
+                                <br><strong>Training format：</strong>Practice of Animal Experiment Techniques
+                                <br><strong>Training instructor：</strong>Certified Instructor
+                                <br><strong>Content：</strong>Introduction and recommended practice of comparative anatomy before animal experiments, surgical procedures for specialized simulated clinical surgeries
+                                <br><strong>Urology surgery：</strong>Radical nephrectomy for renal cell carcinoma; Radical prostatectomy for prostate adenocarcinoma; Radical resection of bladder cancer; Radical prostatectomy
+                                <br><strong>Gynecological surgical procedures：</strong>Endometrial cancer radical surgery
+                                <br><strong>General Surgery：</strong>Radical gastrectomy for gastric and rectal cancer; Left lateral lobectomy of gallbladder and liver
+                                <br><strong>Extrathoracic：</strong>lobectomy
+                                <br><strong>Training focus：</strong>
+                            </div>
+                            <div class="" v-if="traSurInx==3">
+                                <span class="f16">Clinical practice stage: Carry out robot surgery according to the clinical plan</span>
+                                <br><strong>Training objectives：</strong>According to the actual situation of the surgical team, develop a clinical surgery plan, enhance academic confidence, master the robot clinical surgery from simple to complex, and pass the Learning curve
+                                <br><strong>For the crowd：</strong>A team that has completed animal experiment training and is preparing to carry out robotic surgery
+                                <br><strong>Training duration：</strong>90 days
+                                <br><strong>Place：</strong>Surgical team work unit
+                                <br><strong>Training format：</strong>Clinical Surgery
+                                <br><strong>Training instructor：</strong>-
+                                <br><strong>Content：</strong>Carry out robot clinical surgery pathology at different stages according to the surgical plan, and accumulate surgical experience
+                                <br><strong>Training focus：</strong>
+                                <br><strong>Practitioner：</strong>Conduct clinical surgery
+                                <br><strong>assistant：</strong>Clinical surgical cooperation and approach preparation
+                                <br><strong>Operating Room Nurse：</strong>Equipment connection and sterile preparation
+                                <br><strong>Advanced condition：</strong>Complete 10-15 robotic surgeries within 90 days
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex justify_end" style="margin-top: -25px;">
+                        <div class="b005059 center f16 cursor cfff"
+                             style="width: 200px; height: 50px;" @@click="buttrain">Enter training</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div v-if="step==2" class="pr">
+            <div class="h60"></div>
+            <div class="b005059">
+                <div class="w1200 m0aoto cfff flex justify_end alignitems_center h40">
+                    <div>Accout：<span id="account"></span></div>
+                    <div @@click="butsignout" class="cursor" style="margin-left: 20px; margin-right: 10px;">
+                        <span class="el-dropdown-link">
+                            Login out<i class="el-icon-arrow-right el-icon--right"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="w1200 m0aoto">
+                <div class="pr winHeights flex justify_end">
+
+
+
+                    <div class="bfff h100 pa tec bjsddd" style="top: 0px; width: 100px; ">
+                        <div class=" h100 tec m0aoto" style="width: 150px;">
+                            <div class="h20"></div>
+                            <div class="tec fb f20 c005059">
+                                Training materials
+                            </div>
+                            <div class="h20"></div>
+                            <div class="trainlist f16 m0aoto" style="color: #607187;">
+                                @{
+                                    for (int i = 0; i < ViewBag.tagData.Count; i++)
+                                    {
+                                    <div class="center cursor" @@click="tagId='@ViewBag.tagData[i].F_Id';callbackAjax(1)" data-id="@ViewBag.tagData[i].F_Id">@ViewBag.tagData[i].F_Name</div>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="bjsnr" style="width: calc(100% - 190px); padding-top: 20px; ">
+                        <el-row :gutter="12" style="margin-right: 6px;">
+                            <el-col class="cursor" :span="8" v-for="(o, index) in videoData"
+                                    style="padding: 0px 0px 0px 20px; margin-bottom: 20px; ">
+                                <el-card shadow="hover" :body-style="{ padding: '0px' }">
+                                    <div @@click="butPlayVideo(o)">
+                                        <div class="center" :style="{ 'background': 'url('+o.CoverImage+') center center / cover no-repeat #fff' }"
+                                             style=" height: 150px;">
+                                            <img width="30" src="/img/play.png" alt="">
+                                        </div>
+                                        <div style="height: 77px;">
+                                            <div class="h5"></div>
+                                            <div class="ellipsis" style="padding: 8px 15px;">
+                                                {{o.Titile}}
+                                            </div>
+                                            <div class="h5"></div>
+                                            <div class="cfff center h30" v-if="o.isRead==1"
+                                                 style="background: rgba(0, 80, 89, 0.2); width: 100px;">
+                                                Watched
+                                            </div>
+                                        </div>
+                                    </div>
+                                </el-card>
+                            </el-col>
+                        </el-row>
+                        <div class="h60"></div>
+                        <div class="center">
+                            @*<div id="pagination" class="Pagination center" style="">
+
+                            </div>*@
+                            <div class="center">
+                                <el-pagination background layout="prev, pager, next" :total="@ViewBag.Count" :page-size="9" @@current-change="urrentchange">
+                                </el-pagination>
+                            </div>
+                        </div>
+                        <div class="h60"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="pa whtl0 center" style="background: rgba(0, 0, 0, 0.8);" v-if="isBoxvideoShow">
+                <div class="bfff pr bor6" style="padding:15px; margin: 0px 20px;">
+                    <div @@click="isBoxvideoShow=false" class="pa cursor" style="bottom: -80px; left: 50%; margin-left: -25px; ">
+                        <svg viewBox="0 0 1024 1024" width="40" height="40">
+                            <path d="M512 960c-247.039484 0-448-200.960516-448-448S264.960516 64 512 64 960 264.960516 960 512 759.039484 960 512 960zM512 128.287273c-211.584464 0-383.712727 172.128262-383.712727 383.712727 0 211.551781 172.128262 383.712727 383.712727 383.712727 211.551781 0 383.712727-172.159226 383.712727-383.712727C895.712727 300.415536 723.551781 128.287273 512 128.287273z"
+                                  fill="#ffffff" p-id="3842" data-spm-anchor-id="a313x.7781069.0.i0"
+                                  class="selected"></path>
+                            <path d="M557.05545 513.376159l138.367639-136.864185c12.576374-12.416396 12.672705-32.671738 0.25631-45.248112s-32.704421-12.672705-45.248112-0.25631l-138.560301 137.024163-136.447897-136.864185c-12.512727-12.512727-32.735385-12.576374-45.248112-0.063647-12.512727 12.480043-12.54369 32.735385-0.063647 45.248112l136.255235 136.671523-137.376804 135.904314c-12.576374 12.447359-12.672705 32.671738-0.25631 45.248112 6.271845 6.335493 14.496116 9.504099 22.751351 9.504099 8.12794 0 16.25588-3.103239 22.496761-9.247789l137.567746-136.064292 138.687596 139.136568c6.240882 6.271845 14.432469 9.407768 22.65674 9.407768 8.191587 0 16.352211-3.135923 22.591372-9.34412 12.512727-12.480043 12.54369-32.704421 0.063647-45.248112L557.05545 513.376159z"
+                                  fill="#ffffff" p-id="3843" data-spm-anchor-id="a313x.7781069.0.i1"
+                                  class="selected"></path>
+                        </svg>
+                    </div>
+                    <div class="center">
+                        <video controls width="700" class="videoClass" :poster="videoDis.CoverImage"
+                               :src="videoDis.VideoInfo"></video>
+                    </div>
+                    <div class="f16" style="padding: 20px 0px 0px 0px;">
+                        {{videoDis.WonderfulContent}}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="pf whtl0 center showState" style="background: rgba(0, 0, 0, 0.8); z-index: 9;" v-if="isBoxFailedShow">
+            <div class="bfff" style="padding: 50px 30px 30px 30px;">
+
+                <div class="f16 tec" style="color: #979797; line-height: 2; ">
+                    Sorry, your account has not been approved yet<br>
+                    If you need assistance, please contact the staff of Connaughter<br>
+                    Or send an email to<span style="color: #417DAF; text-decoration: underline; opacity: 0.6;">marketing@csrbtx.com</span>
+
+                </div>
+                <div class="h20"></div>
+                <div class="h10"></div>
+                <div class="b005059 center f16 cursor m0aoto cfff"
+                     style=" width: 150px; height: 48px; " @@click="isBoxFailedShow=false">Sure</div>
+            </div>
+        </div>
+    </div>
+    <div class="footerBox">
+        @Html.Partial("~/Areas/en/Views/Shared/_Bottom.cshtml")
+    </div>
+    <script type="text/javascript">
+
+        function screenFuc() {
+            var winWidth = $(window).innerWidth();
+            var winHeight = $(window).innerHeight()
+            //var winHeight = 500
+            if (winWidth > 750) {
+                $(".winHeight").css({
+                    "height": winHeight + "px"
+                })
+            } else {
+                $(".winHeight").css({
+                    "min-height": winHeight + "px"
+                })
+            }
+
+            $(".winHeights").css({
+                "min-height": (winHeight - 90) + "px"
+            })
+            var left = $(".winHeights").offset().left
+            console.log(left)
+            $(".bjsddd").css({ left: -left, width: left + 180 + "px" })
+
+        }
+        (window.onresize = function () {
+            screenFuc();
+        })();
+
+        setTimeout(() => {
+            screenFuc()
+        }, 80)
+
+        new Vue({
+            el: '#app',
+            data() {
+                return {
+                    props: { value: "label" },
+                    city: city,
+                    step: 0,
+                    Signstep: 0,
+                    traSurInx: 0,
+                    form: {
+                        phone: "",
+                        pass: ""
+                    },
+                    setOut: "",
+                    countdown: 60,
+                    SenUserPhoneCode: "",
+                    form2: {
+                        phone: "",
+                        password: "",
+                        ConfirmPassword: "",
+                        Code: ""
+                    },
+                    setOut2: "",
+                    countdown2: 60,
+                    SenUserPhoneCode2: "",
+                    form3: {
+                        trueName: "",
+                        phone: "",
+                        companyName: "",
+                        surname: "",
+                        department: "",
+                        email: "",
+                        password: "",
+                        ConfirmPassword: "",
+                        experience: "",
+                        Code: ""
+                    },
+                    isBoxexamineShow: false,
+                    isBoxFailedShow: false,
+                    isBoxvideoShow: false,
+                    details: {
+                        isexamine: true
+                    },
+                    columnList: [],
+                    surname: "",
+                    input: "",
+
+                    tagId:"",
+                    videoData: [],
+                    videoDis: {},
+
+                };
+            },
+            created() {
+                console.log(this.tagList)
+                var information = $.cookie("information")
+                if (information) {
+                    this.step = 1
+                    $("#account").html(information);
+                    console.log(information)
+                }
+                this.callbackAjax(1)
+
+                 @*$('#pagination').pagination({
+                    totalData: @ViewBag.Count,
+                    showData: 1,
+                    coping: true,
+                    homePage: '',
+                    endPage: '',
+                    prevContent: '',
+                    nextContent: '',
+                    prevCls: 'el-icon el-icon-arrow-left', //上一页class
+                    nextCls: 'el-icon el-icon-arrow-right', //下一页class
+                    callback: function (api) {
+
+                        callbackAjax(api.getCurrent(), tagId)
+
+                    }
+                });*@
+            },
+            methods: {
+                isPoneAvailable(poneInput) {
+                    var myreg = /^[1][2,3,4,5,6,7,8,9][0-9]{9}$/;
+                    if (!myreg.test(poneInput)) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                },
+                isEmailAvailable(emailInput) {
+                    if (emailInput.indexOf('@@') >= 0) {
+                        return true
+                    }
+                    return false
+                },
+                butSign() {
+                    if (this.form.phone == "") {
+                        this.$message.error('Please enter your phone number！');
+                        return
+                    }
+                    if (this.form.pass == "") {
+                        this.$message.error('Please enter the password！');
+                        return
+                    }
+                    const loading = this.$loading({
+                        lock: true,
+                        text: 'Loading',
+                        spinner: 'el-icon-loading',
+                        background: 'rgba(0, 0, 0, 0.7)'
+                    });
+                    var that = this;
+                    $.ajax({
+                        type: "POST",
+                        url: '/en/education_and_training/ValidateInfo',
+                        async: false,
+                        contentType: "application/json",
+
+                        data: JSON.stringify(this.form),
+                        beforeSend: function (xmlHttpRequest) {
+                        },
+                        success: function (data, textStatus) {
+
+                            if (data == "1") {
+                                setTimeout(() => {
+
+                                    loading.close();
+                                    that.step = 1
+
+                                    var date = new Date();
+                                    date.setTime(date.getTime() + (60 * 1000 * 60 * 24));
+
+                                    $.cookie("information", that.form.phone, { expires: date });
+
+                                    if (!that.details.isexamine) {
+                                        that.isBoxexamineShow = true
+                                    }
+                                }, 2000);
+                            }
+                            else {
+                                loading.close();
+                                that.$message.error('Account name and password error!');
+                                return
+                            }
+                        },
+                        complete: function (xmlHttpRequest, textStatus) {
+                        },
+                        error: function () {
+                        }
+                    });
+
+
+
+                },
+                butCode() {
+                    if (this.form2.phone == "") {
+                        this.$message.error('Please enter your username (phone number)！');
+                        return
+                    }
+                    if (!this.isPoneAvailable(this.form2.phone)) {
+                        this.$message.error('The username (phone number) format is incorrect!');
+                        return
+                    }
+
+                    if (this.countdown < 60) {
+                        return
+                    }
+                    const loading = this.$loading({
+                        lock: true,
+                        text: 'Loading',
+                        spinner: 'el-icon-loading',
+                        background: 'rgba(0, 0, 0, 0.7)'
+                    });
+
+                    var that = this;
+
+                    $.ajax({
+                        type: "GET",
+                        url: '/en/education_and_training/SendCode',
+                        async: false,
+                        contentType: "application/json",
+                        data: { "phone": this.form2.phone},
+                        beforeSend: function (xmlHttpRequest) {
+                        },
+                        success: function (data, textStatus) {
+                            if (data != "0") {
+                                that.$message({
+                                    message: 'Verification code sent！',
+                                    type: 'success'
+                                });
+
+                                loading.close();
+                                that.countdown = 59
+                                that.setOut = setInterval(() => {
+                                    that.countdown--
+                                    if (that.countdown == 0) {
+                                        clearInterval(that.setOut)
+                                        that.countdown = 60
+                                    }
+                                }, 1000)
+                                that.SenUserPhoneCode = data
+                            }
+                        },
+                        complete: function (xmlHttpRequest, textStatus) {
+                        },
+                        error: function () {
+                        }
+                    });
+
+
+
+                },
+                butResetting() {
+                    if (this.form2.phone == "") {
+                        this.$message.error('Please enter your username (phone number)！');
+                        return
+                    }
+                    if (!this.isPoneAvailable(this.form2.phone)) {
+                        this.$message.error('The username (phone number) format is incorrect!');
+                        return
+                    }
+                    if (this.form2.password == "") {
+                        this.$message.error('Please enter the password!');
+                        return
+                    }
+                    if (this.form2.ConfirmPassword == "") {
+                        this.$message.error('Please enter the password again!');
+                        return
+                    }
+                    if (this.form2.password != this.form2.ConfirmPassword) {
+                        this.$message.error('The two passwords do not match, please re-enter!');
+                        return
+                    }
+                    if (this.form2.Code == "") {
+                        this.$message.error('Please enter the SMS verification code!');
+                        return
+                    }
+                    if (this.form2.Code != this.SenUserPhoneCode) {
+                        this.$message.error('Incorrect SMS verification code input!');
+                        return
+                    }
+                    const loading = this.$loading({
+                        lock: true,
+                        text: 'Loading',
+                        spinner: 'el-icon-loading',
+                        background: 'rgba(0, 0, 0, 0.7)'
+                    });
+
+                    $.ajax({
+                        type: "POST",
+                        url: '/en/education_and_training/ModifyInfo',
+                        async: false,
+                        contentType: "application/json",
+                        data: JSON.stringify(this.form2),
+                        beforeSend: function (xmlHttpRequest) {
+                        },
+                        success: function (data, textStatus) {
+                            if (data == "2") {
+                                setTimeout(() => {
+                                    loading.close();
+                                    this.$message.error('The phone number does not exist!');
+                                }, 2000);
+                            }
+                            else if (data == "1") {
+                                setTimeout(() => {
+                                    loading.close();
+                                    that.Signstep = 0
+                                    that.$message({
+                                        message: 'Reset successful',
+                                        type: 'success'
+                                    });
+                                }, 2000);
+                            }
+                        },
+                        complete: function (xmlHttpRequest, textStatus) {
+                        },
+                        error: function () {
+                        }
+                    });
+
+
+                },
+                butCode2() {
+                    if (this.form3.phone == "") {
+                        this.$message.error('Please enter your username (phone number)!');
+                        return
+                    }
+                    if (!this.isPoneAvailable(this.form3.phone)) {
+                        this.$message.error('The username (phone number) format is incorrect!');
+                        return
+                    }
+
+                    if (this.countdown2 < 60) {
+                        return
+                    }
+                    const loading = this.$loading({
+                        lock: true,
+                        text: 'Loading',
+                        spinner: 'el-icon-loading',
+                        background: 'rgba(0, 0, 0, 0.7)'
+                    });
+
+                    var that = this;
+
+                    $.ajax({
+                        type: "GET",
+                        url: '/en/education_and_training/SendCode',
+                        async: false,
+                        contentType: "application/json",
+                        data: { "phone": this.form3.phone },
+                        beforeSend: function (xmlHttpRequest) {
+                        },
+                        success: function (data, textStatus) {
+                            if (data != "0") {
+                                that.$message({
+                                    message: 'The verification code has been sent!',
+                                    type: 'success'
+                                });
+
+                                loading.close();
+                                that.countdown2 = 59
+                                that.setOut = setInterval(() => {
+                                    that.countdown2--
+                                    if (that.countdown2 == 0) {
+                                        clearInterval(that.setOut)
+                                        that.countdown2 = 60
+                                    }
+                                }, 1000)
+                                that.SenUserPhoneCode2 = data
+                            }
+                        },
+                        complete: function (xmlHttpRequest, textStatus) {
+                        },
+                        error: function () {
+                        }
+                    });
+
+                },
+                logon() {
+
+                    if (this.form3.trueName == "") {
+                        this.$message.error('Please enter your name!');
+                        return
+                    }
+                    if (this.form3.phone == "") {
+                        this.$message.error('Please enter your username (phone number)!');
+                        return
+                    }
+                    if (!this.isPoneAvailable(this.form3.phone)) {
+                        this.$message.error('The username (phone number) format is incorrect!');
+                        return
+                    }
+                    if (this.form3.companyName == "") {
+                        this.$message.error('Please enter the company name!');
+                        return
+                    }
+                    if (this.form3.surname == "") {
+                        this.$message.error('Please select the province or city where you are located!');
+                        return
+                    }
+                    if (this.form3.department == "") {
+                        this.$message.error('Please select a department/department!');
+                        return
+                    }
+                    if (this.form3.email == "") {
+                        this.$message.error('Please enter your email address!');
+                        return
+                    }
+                    if (!this.isEmailAvailable(this.form3.email)) {
+                        this.$message.error('Incorrect email format!');
+                        return
+                    }
+                    if (this.form3.password == "") {
+                        this.$message.error('Please enter the password!');
+                        return
+                    }
+                    if (this.form3.ConfirmPassword == "") {
+                        this.$message.error('Please enter the password again!');
+                        return
+                    }
+                    if (this.form3.password != this.form3.ConfirmPassword) {
+                        this.$message.error('The two passwords do not match, please re-enter!');
+                        return
+                    }
+                    if (this.form3.Code == "") {
+                        this.$message.error('Please enter the SMS verification code!');
+                        return
+                    }
+                    if (this.form3.Code != this.SenUserPhoneCode2) {
+                        this.$message.error('Incorrect SMS verification code input!');
+                        return
+                    }
+
+                    const loading = this.$loading({
+                        lock: true,
+                        text: 'Loading',
+                        spinner: 'el-icon-loading',
+                        background: 'rgba(0, 0, 0, 0.7)'
+                    });
+                    var that = this;
+                    this.form3.surname = (this.form3.surname).join("/")
+                    console.log(this.form3)
+                    $.ajax({
+                        type: "POST",
+                        url: '/en/education_and_training/AddInfo',
+                        async: false,
+                        contentType: "application/json",
+                        data: JSON.stringify(this.form3),
+                        beforeSend: function (xmlHttpRequest) {
+                        },
+                        success: function (data, textStatus) {
+                            if (data == "2") {
+                                setTimeout(() => {
+                                    loading.close();
+                                    this.$message.error('The phone number has already been registered!');
+                                }, 2000);
+                            }
+                            else if (data == "1") {
+                                setTimeout(() => {
+                                    loading.close();
+                                    that.Signstep = 0
+                                    that.$message({
+                                        message: 'register successful',
+                                        type: 'success'
+                                    });
+                                }, 2000);
+                            }
+                        },
+                        complete: function (xmlHttpRequest, textStatus) {
+                        },
+                        error: function () {
+                        }
+                    });
+
+                },
+                buttrain() {
+                    var that = this;
+                    $.ajax({
+                        type: "Get",
+                        url: '/en/education_and_training/CheckUserState',
+                        async: false,
+                        data: { "phone": $.cookie("information") },
+                        beforeSend: function (xmlHttpRequest) {
+                        },
+                        success: function (data, textStatus) {
+
+                            if (data == "1") {
+                                that.step = 2
+                            }
+                            else {
+
+                                that.isBoxFailedShow = true
+                            }
+                        },
+                        complete: function (xmlHttpRequest, textStatus) {
+                        },
+                        error: function () {
+
+                        }
+                    });
+
+                    setTimeout(() => {
+                        screenFuc()
+                        $("#account").html($.cookie("information"));
+                    })
+                },
+                butPlayVideo(e) {
+                    this.isBoxvideoShow = true
+                    this.videoDis = e;
+                    $.ajax({
+                        type: "Get",
+                        url: '/en/education_and_training/AddUserActionInfo',
+                        async: false,
+                        data: { "phone": $.cookie("information"), "videoId": this.videoDis.Id },
+                        beforeSend: function (xmlHttpRequest) {
+                        },
+                        success: function (data, textStatus) {
+
+                        },
+                        complete: function (xmlHttpRequest, textStatus) {
+                        },
+                        error: function () {
+
+                        }
+                    });
+
+                },
+                butsignout() {
+                    this.step = 0
+                    $.removeCookie("information");
+                },
+                urrentchange(e) {
+                    console.log(e)
+                    this.callbackAjax(e)
+                },
+                callbackAjax(e) {
+                    var that = this
+                    $.ajax({
+                        type: "Get",
+                        url: '/en/education_and_training/GetDataByPage',
+                        async: false,
+                        data: { "currentPage": e, "tagId": this.tagId, "phone": $.cookie("information") },
+                        beforeSend: function (xmlHttpRequest) {
+                        },
+                        success: function (data, textStatus) {
+                            console.log(data);
+                            that.videoData = JSON.parse(data);
+                            console.log(that.videoData);
+                        },
+                        complete: function (xmlHttpRequest, textStatus) {
+                        },
+                        error: function () {
+
+                        }
+                    });
+                }
+            }
+        })
+
+        $(function () {
+            $("#app").show()
+
+            $(".Navigation").addClass("on")
+
+        })
+
+
+
+
+
+
+
+
+    </script>
+</body>
+</html>

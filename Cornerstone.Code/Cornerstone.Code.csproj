@@ -1,0 +1,46 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Extend\**" />
+    <Compile Remove="Extension\**" />
+    <EmbeddedResource Remove="Extend\**" />
+    <EmbeddedResource Remove="Extension\**" />
+    <None Remove="Extend\**" />
+    <None Remove="Extension\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="Extend\AutoMapperExt.cs" />
+    <Compile Include="Extend\Ext.Convert.cs" />
+    <Compile Include="Extend\Ext.DateTime.cs" />
+    <Compile Include="Extend\Ext.Enum.cs" />
+    <Compile Include="Extend\Ext.Exception.cs" />
+    <Compile Include="Extend\Ext.Format.cs" />
+    <Compile Include="Extend\Ext.Validate.cs" />
+    <Compile Include="Extend\ExtLinq.cs" />
+    <Compile Include="Extend\ExtLinq.SortBy.cs" />
+    <Compile Include="Extend\ExtList.Comparint.cs" />
+    <Compile Include="Extend\ExtList.cs" />
+    <Compile Include="Extend\ExtTable.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="11.0.1" />
+    <PackageReference Include="Chloe" Version="5.1.1" />
+    <PackageReference Include="CSRedisCore" Version="3.8.3" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.43" />
+    <PackageReference Include="iTextSharp" Version="5.5.13.3" />
+    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
+    <PackageReference Include="NPOI" Version="2.5.6" />
+    <PackageReference Include="Serenity.Web" Version="3.14.5" />
+  </ItemGroup>
+
+</Project>

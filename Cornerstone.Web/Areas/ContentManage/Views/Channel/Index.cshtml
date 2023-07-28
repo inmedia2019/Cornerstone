@@ -1,0 +1,246 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div class="layuimini-container">
+    <div class="layuimini-main">
+        <fieldset class="table-search-fieldset">
+            <div>
+                <form class="layui-form layui-form-pane">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">关键字:</label>
+                            <div class="layui-input-inline">
+                                <input type="text" id="txt_keyword" name="txt_keyword" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <button type="submit" class="layui-btn layui-btn-primary" lay-submit lay-filter="data-search-btn"><i class="layui-icon">&#xe615;</i> 搜 索</button>
+                        </div>
+                        <div style="float:right; margin:5px;" class="showlan">
+                            <button id="NF-lan-en" authorize="yes" class="layui-btn layui-btn-sm  " lay-submit lay-filter="lan-en"> <i class="fa fa-key"></i>英文版</button>
+                        </div>
+                        <div style="float: right; margin: 5px;" class="showlan">
+                            <button id="NF-lan-cn" authorize="yes" class="layui-btn layui-btn-sm layui-btn-warm  " lay-submit lay-filter="lan-cn"> <i class="fa fa-key"></i>中文版</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </fieldset>
+        <script type="text/html" id="toolbarDemo">
+            <div class="layui-btn-container" id="toolbar">
+                <button id="NF-add" authorize class="layui-btn layui-btn-sm data-add-btn layui-hide" lay-event="add"><i class="layui-icon">&#xe654;</i>新增</button>
+                <button id="NF-edit" authorize class="layui-btn layui-btn-sm layui-btn-warm data-edit-btn layui-hide" lay-event="edit"><i class="layui-icon">&#xe642;</i>修改</button>
+                <button id="NF-delete" authorize class="layui-btn layui-btn-sm layui-btn-danger data-delete-btn layui-hide" lay-event="delete"> <i class="layui-icon">&#xe640;</i>删除</button>
+                <button id="NF-export" authorize="yes" class="layui-btn layui-btn-sm  data-export-btn layui-hide" lay-event="export"> <i class="fa fa-key"></i>导出</button>
+                <button id="NF-choose" authorize class="layui-btn layui-btn-sm layui-btn-normal data-info-btn layui-hide" lay-event="choose"> <i class="layui-icon">&#xe60b;</i>内容属性</button>
+            </div>
+        </script>
+        <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"></table>
+        <script type="text/html" id="currentTableBar">
+            <a id="NF-edit" authorize="yes" class="layui-btn layui-btn-sm" lay-event="edit">修改</a>
+            <a id="NF-delete" authorize="yes" class="layui-btn layui-btn-sm layui-btn-danger data-delete-btn" lay-event="delete">删除</a>
+            <a id="NF-details" authorize="yes" class="layui-btn layui-btn-sm layui-btn-normal data-info-btn" lay-event="details">查看</a>
+        </script>
+    </div>
+</div>
+<script>
+    layui.use(['jquery', 'form', 'treeTable', 'table',  'soulTable', 'common','optimizeSelectOption'], function () {
+         var $ = layui.jquery,
+             form = layui.form,
+             table = layui.table,
+             treeTable = layui.treeTable,
+             soulTable = layui.soulTable,
+             common = layui.common;
+         //加载数据
+         wcLoading.close();
+         var entity;
+         //权限控制(js是值传递)
+         currentTableBar.innerHTML = common.authorizeButtonNew(currentTableBar.innerHTML);
+         toolbarDemo.innerHTML = common.authorizeButtonNew(toolbarDemo.innerHTML);
+         var rendertree = common.rendertreetable({
+             elem: '#currentTableId',
+             id: 'currentTableId',
+             url: '@(Cornerstone.Code.GlobalContext.SystemConfig.VirtualDirectory)/ContentManage/Channel/GetGridJson',
+             tree: {
+                 iconIndex: 1,           // 折叠图标显示在第几列
+                 isPidData: true,        // 是否是id、pid形式数据
+                 idName: 'F_Id',  // id字段名称
+                 pidName: 'F_ParentId',     // pid字段名称
+                 arrowType: 'arrow2',
+                 getIcon: 'ew-tree-icon-style2',
+             },
+             cols: [[
+                 { type: "checkbox", width: 50 },
+                 //此处需修改
+                 { field: 'F_ChannelName', title: '名称', fixed: 'left', width: 200 },
+                 //{
+                 //    field: 'F_Type', title: '类型', width: 200, sort: true,
+                 //    templet: function (d) {
+                 //        return top.clients.dataItems["ColumnType"][d.F_Type] == undefined ? "" : top.clients.dataItems["ColumnType"][d.F_Type];
+                 //    }
+                 //},
+                 {
+                     field: 'F_ContentTemplate', title: '模型名称', width: 200, sort: true,
+                     templet: function (d) {
+                         return top.clients.template[d.F_ContentTemplate] == undefined ? "" : top.clients.template[d.F_ContentTemplate].name;
+                     }
+                 },
+                /* { field: 'F_LinkUrl', title: 'Url', width: 200, sort: true },*/
+                 { field: 'F_Number', title: '文章数量', width: 200, sort: true },
+                 { field: 'F_Order', title: '排序', width: 60, sort: true },
+                 //{
+                 //    field: 'F_IsBrowse', title: '是否专栏', width: 200,
+                 //    templet: function (d) {
+                 //        if (d.F_IsBrowse == true) {
+                 //            return "<span class='layui-btn layui-btn-normal layui-btn-xs'>是</span>";
+                 //        } else {
+                 //            return "<span class='layui-btn layui-btn-warm layui-btn-xs'>否</span>";
+                 //        }
+                 //    }
+                 //},
+                 {
+                     field: 'F_Show', title: '是否显示', width: 200,
+                     templet: function (d) {
+                         if (d.F_Show == true) {
+                             return "<span class='layui-btn layui-btn-normal layui-btn-xs'>是</span>";
+                         } else {
+                             return "<span class='layui-btn layui-btn-warm layui-btn-xs'>否</span>";
+                         }
+                     }
+                 },
+                 { title: '操作', minWidth: 180, toolbar: '#currentTableBar', align: "center", fixed: 'right' }
+             ]],
+             done: function () {
+                 //展开全部
+                 rendertree.expandAll();
+             }
+         });
+         // 监听搜索操作
+         form.on('submit(data-search-btn)', function (data) {
+             var queryJson = data.field.txt_keyword;
+             //执行搜索重载
+             common.reloadtreetable(rendertree, {
+                 where: { keyword: queryJson },
+             });
+             entity = null;
+             return false;
+         });
+
+        $("#NF-lan-en").on("click", function () {
+            $.get({
+                data: { "lan": "1" },
+                url: '@(Cornerstone.Code.GlobalContext.SystemConfig.VirtualDirectory)/ContentManage/Block/SetLan',
+                success: function (data) {
+
+                }
+            })
+
+        });
+
+        $("#NF-lan-cn").on("click", function () {
+            $.get({
+                data: { "lan": "0" },
+                url: '@(Cornerstone.Code.GlobalContext.SystemConfig.VirtualDirectory)/ContentManage/Block/SetLan',
+                success: function (data) {
+
+                }
+            })
+
+        });
+
+         treeTable.on('row(currentTableId)', function (obj) {
+             obj.tr.find("div.layui-unselect.layui-form-checkbox")[0].click();
+             entity = obj;
+         })
+         //toolbar监听事件
+         treeTable.on('toolbar(currentTableId)', function (obj) {
+             if (obj.event === 'add') {  // 监听添加操作
+                 keyValue = !!entity ? entity.data.F_Id : null;
+                 common.openNewTabByIframe({
+                     title: "添加栏目",
+                     href: "@(Cornerstone.Code.GlobalContext.SystemConfig.VirtualDirectory)/ContentManage/Channel/Form"
+                 });
+             }
+             else if (obj.event === 'delete') {
+                 var entity = rendertree.checkStatus(false);
+                 if (entity.length == 0) {
+                     common.modalMsg("未选中数据", "warning");
+                     return false;
+                 }
+                 var ids = [];
+                 for (var i = 0; i < entity.length; i++) {
+                     ids.push(entity[i].F_Id);
+                 }
+                 common.deleteForm({
+                     url: "@(Cornerstone.Code.GlobalContext.SystemConfig.VirtualDirectory)/ContentManage/Channel/DeleteForm",
+                     param: { keyValue: ids.join(',') },
+                     success: function () {
+                         common.reload('data-search-btn');
+                   }
+               });
+             }
+
+             else if (obj.event === 'export') {
+                 var entity = rendertree.checkStatus(false);
+                 if (entity.length == 0) {
+                     treeTable.exportData('xls');
+                 }
+                 else {
+                     treeTable.exportData('xls');
+                 }
+
+             }
+             else if (obj.event === 'edit') {
+                 var entity = rendertree.checkStatus(false);
+                 if (entity.length == 0) {
+                   common.modalMsg("未选中数据", "warning");
+                   return false;
+                 }
+                 if (entity.length > 1) {
+                     common.modalMsg("只能选择一条编辑", "warning");
+                     return false;
+                 }
+                 common.openNewTabByIframe({
+                     title: "编辑栏目",
+                     href: "@(Cornerstone.Code.GlobalContext.SystemConfig.VirtualDirectory)/ContentManage/Channel/Form?event=edit&keyValue=" + entity[0].F_Id
+               });
+           }
+             else if (obj.event === 'choose') {
+                 var entity = rendertree.checkStatus(false);
+                 if (entity.length == 0) {
+                   common.modalMsg("未选中数据", "warning");
+                   return false;
+                 }
+                 if (entity.length > 1) {
+                     common.modalMsg("只能选择一条编辑", "warning");
+                     return false;
+                 }
+                 common.openNewTabByIframe({
+                     title: "选择栏目内容属性",
+                     href: "@(Cornerstone.Code.GlobalContext.SystemConfig.VirtualDirectory)/DevelopmentManagement/ContentAttribute/Index?channelId=" + entity[0].F_Id + "&channelname=" + entity[0].F_ChannelName
+               });
+           }
+           return false;
+         });
+           //toolrow监听事件
+         treeTable.on('tool(currentTableId)', function (obj) {
+            if (obj.event === 'delete') {
+                common.deleteForm({
+                    url: "@(Cornerstone.Code.GlobalContext.SystemConfig.VirtualDirectory)/ContentManage/Channel/DeleteForm",
+                    param: { keyValue: obj.data.F_Id },
+                    success: function () {
+                        obj.del();
+                    }
+                });
+            }
+            else if (obj.event === 'edit') {
+                common.openNewTabByIframe({
+                    title: "编辑栏目",
+                    href: "@(Cornerstone.Code.GlobalContext.SystemConfig.VirtualDirectory)/ContentManage/Channel/Form?event=edit&keyValue=" + obj.data.F_Id
+                });
+            }
+            return false;
+        });
+   });
+</script>

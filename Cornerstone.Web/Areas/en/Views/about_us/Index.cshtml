@@ -1,0 +1,369 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>@ViewBag.Info.F_SeoTitle</title>
+    @Html.Partial("~/Areas/en/Views/Shared/_Head.cshtml")
+    <meta name="keyword" content="@ViewBag.Info.F_SeoKeywords" />
+    <meta name="Description" content="@ViewBag.Info.F_SeoDescription" />
+</head>
+<body class="en">
+
+    <div class="NavBox">
+        @Html.Partial("~/Areas/en/Views/Shared/_Menu.cshtml")
+    </div>
+    <div class="swiper-container h100 about" id="swiper-container1">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide" style="background: url(@ViewBag.Info.F_CoverImage) no-repeat center; background-size:cover;">
+                <div class="swiper-container h100" id="Ybox2">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <div class="h60"></div>
+                            <div class="pr animated fadeIn gywm dn">
+                                <div class="w1200 m0aoto cfff">
+                                    <div class="h60"></div>
+                                    <div class="f24 fb">About Us</div>
+                                    <div class="h60"></div>
+                                </div>
+                                <div class="pr" style="height: calc(100% - 156px);">
+                                    <div class="flex pr h100">
+                                        <div class="h100 animated fadeInLeft" style="width: calc(50% + 200px); min-width: 720px; background: rgba(255, 255, 255, 0.9); border-radius: 0px 6px 0px 0px; ">
+
+                                        </div>
+                                        <div class="flex pr" style="height: calc(100% - 0px); width: calc(50% - 200px);">
+                                            @*<div class="h100 animated fadeInDown pt-page-delay1000" style=" background: rgba(255, 255, 255, 0.7); border-radius:6px; width: 5%; margin-left: 5%; "></div>
+                                            <div class="h100 pr" style=" width: 6%; margin-left: 6%; ">
+                                                <div class="pa animated fadeInDown pt-page-delay1300" style="left: 0px; right: 0px; top: 0px; bottom: 70%; background: rgba(255, 255, 255, 0.7); border-radius:6px; "></div>
+                                                <div class="pa animated fadeInUp pt-page-delay1300" style="left: 0px; right: 0px; top: 70%; bottom: 0%; background: rgba(255, 255, 255, 0.7); border-radius:6px; "></div>
+                                            </div><div class="h100 pr" style=" width: 6%; margin-left: 6%; ">
+                                                <div class="pa animated fadeInDown pt-page-delay1600" style="left: 0px; right: 0px; top: 0px; bottom: 50%; background: rgba(255, 255, 255, 0.7); border-radius:6px; "></div>
+                                                <div class="pa animated fadeInUp pt-page-delay1600" style="left: 0px; right: 0px; top: 70%; bottom: 0%; background: rgba(255, 255, 255, 0.7); border-radius:6px; "></div>
+                                            </div>
+                                            <div class="h100 animated fadeInUp pt-page-delay1900" style=" background: rgba(255, 255, 255, 0.7); border-radius:6px; width: 5%; margin-left: 5%; "></div>*@
+                                            <img class="pa animated fadeInRight" style="top: 0px; left: 20px; width: calc(100% - 40px); max-width: 550px; " src="/img/adobelogo.png" alt="">
+                                        </div>
+                                    </div>
+                                    <div class="pa animated fadeInLeft" style="width: 100%; top: 0px; left: 0px; bottom: 0px; ">
+                                        <div class="w1200 m0aoto flex">
+                                            <div class="pr" style="width: calc(50% + 140px); ">
+                                                <div class="h60"></div>
+                                                <div class="f16" style="line-height: 2;">
+                                                    @Html.Raw(ViewBag.Info.F_Content)
+                                                </div>
+                                                <img class="pa animated fadeIn pt-page-delay200" style="bottom: 0px; right: 0px; height: 130px; position: absolute; " src="@ViewBag.Info.F_SharePic" alt="">
+                                            </div>
+                                            <div class="">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-scrollbar"></div>
+                </div>
+
+            </div>
+            <div class="swiper-slide">
+                <div class="pr winHeight center animated fadeIn" style="background: url(@ViewBag.Info.F_LiveBroadcastId) no-repeat center; background-size:cover;">
+                    <div class="cfff center tec w1200 m0aoto">
+                        <div class=" animated fd pt-page-delay200">
+                            @Html.Raw(ViewBag.Info.F_MiddleFont1)
+
+
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="swiper-slide">
+                <div class="pr winHeight center ovh">
+                    @Html.Raw(ViewBag.Info.F_LiveIntroduction)
+                    
+                </div>
+            </div>
+            <div class="swiper-slide">
+                <div class="swiper-container h100" id="Ybox3">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <div class="winHeight2">
+                                <div class="h60"></div>
+                                <div class="center"
+                                     style="background: url(/img/about4.jpg) no-repeat top; background-size: cover; height: 260px; ">
+                                    <div class="w1200 m0aoto cfff">
+                                        <div class="f24 fb">History</div>
+                                        <div class="h20"></div>
+                                        <div class="progress-bar">
+
+                                            @{
+
+                                                for (int i = 0; i < ViewBag.Year.Count; i++)
+                                                {
+                                                    string s = "pro" + i;
+                                                    <div class="@s node" data-inx="@i">
+                                                        <div class="txt">@ViewBag.Year[i]</div>
+                                                        <div class="core2"></div>
+                                                        <div class="core"></div>
+                                                    </div>
+
+                                                    if (i < ViewBag.Year.Count - 1)
+                                                    {
+                                                        <div class="line"></div>
+
+                                                    }
+
+                                                }
+                                            }
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="h60"></div>
+                                <div class="m0aoto w1200 ovh">
+                                    <div class="swiper mySwiper" id="Ybox4">
+                                        <div class="swiper-wrapper">
+                                            @{
+                                                for (int i = 0; i < ViewBag.Year.Count; i++)
+                                                {
+                                                    <div class="swiper-slide history-main-box">
+                                                        <div class="f20 fb" style="">@ViewBag.Year[i]</div>
+                                                        <div class="h15"></div>
+                                                        <div class="h1" style="background: #979797; opacity: 0.5;"></div>
+                                                        <div class="h15"></div>
+                                                        <div class="f16">
+                                                            @{
+                                                                for (int j = 0; j < ViewBag.news.Count; j++)
+                                                                {
+
+                                                                    if (ViewBag.news[j].F_Titile == ViewBag.Year[i].ToString())
+                                                                    {
+                                                                        var month = ViewBag.news[j].F_SubTitle;
+                                                                        <div class="" style="margin-bottom: 15px;">
+                                                                            <div class="fb c005059">@month</div>
+                                                                            <div class="h5"></div>
+                                                                            <div class="c000" style="opacity: 0.5;">
+                                                                                @Html.Raw(ViewBag.news[j].F_LiveIntroduction)
+                                                                            </div>
+                                                                        </div>
+                                                                    }
+                                                                }
+                                                            }
+
+                                                        </div>
+                                                    </div>
+                                                }
+
+                                            }
+                                            <div class="swiper-slide history-main-box"></div>
+                                            <div class="swiper-slide history-main-box"></div>
+                                        </div>
+                                        <div class="swiper-pagination"></div>
+                                    </div>
+                                </div>
+                                </div>
+                                <div class="footerBox">
+                                    @Html.Partial("~/Areas/en/Views/Shared/_Bottom.cshtml")
+                                </div>
+                            </div>
+                    </div>
+                    <div class="swiper-scrollbar"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    <script type="text/javascript">
+      
+        function screenFuc() {
+            var winWidth = $(window).innerWidth();
+            var winHeight = $(window).innerHeight()
+
+            $(".winHeight").css({
+                "height": winHeight + "px"
+            })
+            $(".winHeight2").css({
+                "min-height": winHeight + "px"
+            })
+
+
+            var gywmH = winHeight - 60
+
+
+            if (gywmH < 780) {
+
+                gywmH = winHeight - 45
+
+
+            }
+
+            $(".gywm").css({
+                "height": gywmH + "px",
+                "min-height":"1130px"
+            })
+        }
+        (window.onresize = function () {
+            screenFuc();
+        })();
+
+       
+
+
+        $(function () {
+            var mySwiper1 = new Swiper('#swiper-container1', {
+                direction: 'vertical',
+                //swipeHandler: '.swipe-handler',
+                speed: 700,
+                on: {
+                    transitionStart: function () {
+                        if (mySwiper1.activeIndex == 0) {
+                            if (Ybox2.translate > -53) {
+                                $(".Navigation").removeClass("on")
+                            } else {
+                                $(".Navigation").addClass("on")
+                            }
+                        } else {
+                            $(".Navigation").addClass("on")
+                        }
+                    },
+                },
+            });
+            var Ybox2 = new Swiper('#Ybox2', { //子swiper
+                direction: 'vertical',
+                nested: true,
+                slidesPerView: 'auto',
+                freeMode: true,
+                mousewheel: {
+                    sensitivity: 0.3,
+                },
+                scrollbar: {
+                    el: '#Ybox2 .swiper-scrollbar',
+                    draggable: true,
+                    snapOnRelease: false,
+                },
+                on: {
+                    transitionEnd: function (swiper, event) {
+                        if (Ybox2.translate > -53) {
+                            $(".Navigation").removeClass("on")
+                        } else {
+                            $(".Navigation").addClass("on")
+                        }
+                    },
+                },
+            })
+
+            setTimeout(function () {
+                $(".gywm").show()
+                screenFuc();
+            }, 200)
+            setTimeout(function () {
+                Ybox2.update()
+            }, 500)
+
+            var Ybox3 = new Swiper('#Ybox3', { //子swiper
+                direction: 'vertical',
+                nested: true,
+                slidesPerView: 'auto',
+                freeMode: true,
+                mousewheel: {
+                    sensitivity: 0.3,
+                },
+                scrollbar: {
+                    el: '#Ybox3 .swiper-scrollbar',
+                    draggable: true,
+                    snapOnRelease: false,
+                },
+            })
+
+            var Ybox4 = new Swiper('#Ybox4', { //子swiper
+                slidesPerView: $(window).innerWidth() < 750 ? 1 : 3,
+                spaceBetween: 25,
+                //centeredSlides: true,
+                on: {
+                    transitionEnd: function (e) {
+                        try {
+                            var inx = Ybox4.activeIndex
+                            $(".node.active").removeClass("active")
+
+                            $(".pro" + inx).addClass("active")
+
+                        } catch (e) {
+                            //TODO handle the exception
+                        }
+                    },
+                },
+            })
+
+            //Ybox4.slideNext();
+            setTimeout(() => {
+                $(".node.active").removeClass("active")
+                $(".pro0").addClass("active")
+            }, 600)
+
+            $(".node").click(function () {
+                var inx = $(this).data().inx
+                Ybox4.slideTo(inx, 500, false);
+                $(".node.active").removeClass("active")
+                $(".pro" + inx).addClass("active")
+            })
+
+
+            var flag = true;
+            var height = $(window).innerHeight();
+            var tem = 0;
+            var isFirefox = (/Firefox/i.test(navigator.userAgent)); //判断是不是火狐浏览器
+            var agent = navigator.userAgent.toLowerCase();
+            var isMac = /macintosh|mac os x/i.test(navigator.userAgent);
+            var flagout
+            $(window).on(isFirefox ? 'DOMMouseScroll' : 'mousewheel', function (e) {
+                var delta = isFirefox ? e.detail * -1 : e.originalEvent.wheelDelta;
+
+                if (!flag) {
+                    return
+                }
+                clearTimeout(flagout)
+                var Ybox = $("#swiper-container1>.swiper-wrapper>.swiper-slide-active>div").attr("id")
+
+                if (delta < 0) {
+                    if (Ybox) {
+                        if (Ybox.indexOf("Ybox2") >= 0) {
+                            if (Ybox2.isEnd) {
+                                mySwiper1.slideNext();
+                                flag = false;
+                            }
+                        }
+                    } else {
+                        mySwiper1.slideNext();
+                        flag = false;
+                    }
+                } else {
+                    if (Ybox) {
+                        if (Ybox.indexOf("Ybox2") >= 0) {
+                            if (Ybox2.isBeginning) {
+                                mySwiper1.slidePrev();
+                            }
+                        }
+                        if (Ybox.indexOf("Ybox3") >= 0) {
+                            if (Ybox3.isBeginning) {
+                                mySwiper1.slidePrev();
+                                flag = false;
+                            }
+                        }
+                    } else {
+                        mySwiper1.slidePrev();
+                        flag = false;
+                    }
+                }
+                flagout = setTimeout(() => {
+                    flag = true
+                }, isMac ? 1500 : 500)
+            })
+        })
+    </script>
+
+</body>
+</html>

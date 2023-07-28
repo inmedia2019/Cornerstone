@@ -1,0 +1,168 @@
+﻿@{
+    ViewBag.Title = "Form"; 
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<script>
+    layui.use(['jquery', 'form', 'laydate', 'common','optimizeSelectOption'], function () {
+        var form = layui.form,
+            $ = layui.$,
+            common = layui.common,
+            laydate = layui.laydate;
+        var keyValue = $.request("keyValue");
+        //权限字段
+        common.authorizeFields('adminform');
+        var event = $.request("event");
+        //此处需修改
+        //类型为时间时
+        //laydate.render({
+            //elem: '#F_Birthday'
+            //, btns: ['clear', 'now']
+            //, trigger: 'click',
+            //format: 'yyyy-MM-dd',
+        //});
+
+        $(function () {
+            initControl();
+            @*if (!!keyValue) {
+                 common.ajax({
+                   url: '@(Cornerstone.Code.GlobalContext.SystemConfig.VirtualDirectory)/ContentManage/Lable/GetFormJson',
+                   dataType: 'json',
+                   data: { keyValue: keyValue },
+                   async: false,
+                   success: function (data) {
+                       common.val('adminform', data);
+                    }
+               });
+           }*@
+            if (event == "edit") {
+                common.ajax({
+                    url: '@(Cornerstone.Code.GlobalContext.SystemConfig.VirtualDirectory)/ContentManage/Lable/GetFormJson',
+                    dataType: 'json',
+                    data: { keyValue: keyValue },
+                    async: false,
+                    success: function (data) {
+                        common.val('adminform', data);
+                    }
+                });
+            }
+            else {
+                if (!!keyValue) {
+                    $('#F_ParentId').val(keyValue);
+                }
+            }
+           form.render();
+       });
+       wcLoading.close();
+
+       function initControl() {
+
+            $("#F_ParentId").bindSelect({
+                url: "@(Cornerstone.Code.GlobalContext.SystemConfig.VirtualDirectory)/ContentManage/Lable/GetTreeSelectJson",
+            });
+       }
+
+       //监听提交
+       form.on('submit(saveBtn)', function (data) {
+           // 单击之后提交按钮不可选,防止重复提交
+           $('.site-demo-active').addClass('layui-btn-disabled');
+           $('.site-demo-active').attr('disabled', 'disabled');
+           var postData = data.field;
+           if (!postData["F_EnabledMark"]) postData["F_EnabledMark"] = false;
+           common.submitForm({
+               url: event == "edit" ? "@(Cornerstone.Code.GlobalContext.SystemConfig.VirtualDirectory)/ContentManage/Lable/SubmitForm?keyValue=" + keyValue : "@(Cornerstone.Code.GlobalContext.SystemConfig.VirtualDirectory)/ContentManage/Lable/SubmitForm",
+               param: postData,
+               close: false,
+               success: function (result) {
+                   //common.parentreload('data-search-btn');
+                   var currentUrl = window.location.href;
+                   var iframes = top.$(".layui-show>iframe");
+                   if (currentUrl.indexOf("event=edit") >= 0) {
+                       common.reloadIframe("@(Cornerstone.Code.GlobalContext.SystemConfig.VirtualDirectory)/ContentManage/Channel/Index", 'data-search-btn');
+                       iframes[0].src = currentUrl;
+                   }
+                   else {
+                       iframes[0].src = currentUrl + "?event=edit&keyValue=" + result.keyValue;
+
+                   }
+               }
+           })
+           return false;
+       });
+
+          $("#NF-lan-en").on("click", function () {
+            var iframes = top.$(".layui-show>iframe");
+            $.get({
+                data: {"lan":"1"},
+                url: '@(Cornerstone.Code.GlobalContext.SystemConfig.VirtualDirectory)/ContentManage/Block/SetLan',
+                success: function (data) {
+                    iframes[0].src = window.location.href;
+                }
+            })
+
+        });
+
+        $("#NF-lan-cn").on("click", function () {
+            var iframes = top.$(".layui-show>iframe");
+            $.get({
+                data: {"lan":"0"},
+                url: '@(Cornerstone.Code.GlobalContext.SystemConfig.VirtualDirectory)/ContentManage/Block/SetLan',
+                success: function (data) {
+                    iframes[0].src = window.location.href;
+                }
+            })
+
+        });
+
+   });
+</script>
+
+<body>
+    <center>
+        <div style=" margin: 10px;">
+
+            <button id="NF-lan-cn" authorize="yes" class="layui-btn layui-btn-sm layui-btn-warm  " style="height:30px; padding:0 25px;" lay-submit lay-filter="lan-cn"> <i class="fa fa-flag"></i>中文版</button>
+            <button id="NF-lan-en" authorize="yes" class="layui-btn layui-btn-sm  " lay-submit style="height:30px; padding:0 25px;" lay-filter="lan-en"> <i class="fa fa-flag-checkered"></i>英文版</button>
+        </div>
+
+    </center>
+    <div class="layuimini-container">
+        <div class="layuimini-main">
+            <div class="layui-form layuimini-form" lay-filter="adminform">
+                <div class="layui-form-item layui-hide">
+                    <label class="layui-form-label required">上级标签</label>
+                    <div class="layui-input-block">
+                        <input type="hidden" id="F_LanInfoId" name="F_LanInfoId" value="">
+                        <select id="F_ParentId" name="F_ParentId" lay-verify="required" lay-search>
+                            <option value="0" selected>父节点</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-form-item layui-hide">
+                    <label class="layui-form-label required">标签名称</label>
+                    <div class="layui-input-block">
+                        <input type="text" id="F_Name" name="F_Name" autocomplete="off" lay-verify="required" placeholder="请输入" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item layui-hide">
+                    <label class="layui-form-label required">排序</label>
+                    <div class="layui-input-block">
+                        <input type="text" id="F_Order" name="F_Order" autocomplete="off" lay-verify="required" placeholder="请输入" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item layui-hide">
+                    <label class="layui-form-label">选项</label>
+                    <div class="layui-input-block">
+                        <input type="checkbox" name="F_EnabledMark" id="F_EnabledMark" checked="" value="true" title="有效">
+                    </div>
+                </div>
+             
+                <div class="form-group-bottom text-right">
+                    <div class="layui-input-block">
+                        <button class="layui-btn site-demo-active" lay-submit id="submit" lay-filter="saveBtn">确认保存</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+

@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Cornerstone.CodeGenerator": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}
