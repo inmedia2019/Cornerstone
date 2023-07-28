@@ -36,29 +36,29 @@ namespace UEditor.Core
             /// <summary>
             /// id
             /// </summary>
-            public const string AccessKeyIds = "LTAI5tFYZGARx1xoBQyj5eCb";//"LTAI4GHBRgEtqmPhSNSohT65";//;
+            public const string AccessKeyIds = "xxx";//;
             /// <summary>
             /// secret
             /// </summary>
-            public const string AccessKeySecrets = "MIfKPL9og7bn5JWKImoADjjqICjjdA";//"OJ7kAuNqu9tWEGvShTyICHZmJ9ecHw";//;
+            public const string AccessKeySecrets = "xxx";//;
             /// <summary>
             /// id
             /// </summary>
-            public const string AccessKeyId = "LTAI4GHBRgEtqmPhSNSohT65";//"LTAI5tFYZGARx1xoBQyj5eCb";//;
+            public const string AccessKeyId = "xxx";//;
             /// <summary>
             /// secret
             /// </summary>
-            public const string AccessKeySecret = "OJ7kAuNqu9tWEGvShTyICHZmJ9ecHw";//"MIfKPL9og7bn5JWKImoADjjqICjjdA";//;
+            public const string AccessKeySecret = "xxx";//;
             /// <summary>
             /// endpoint
             /// </summary>
-            public const string AccessEndpoint = "https://oss-cn-shanghai.aliyuncs.com";//"https://oss-accelerate.aliyuncs.com";//;
+            public const string AccessEndpoint = "xxx";//;
             /// <summary>
             /// bucketName
             /// </summary>
-            public const string BucketName = "cornerstonefile2023";//"csrbtx-oss-cn";//"cornerstonefile2023";
+            public const string BucketName = "xxx";
 
-            public const string OSSUrl = "https://cornerstonefile2023.oss-cn-shanghai.aliyuncs.com/";// "https://csrbtx-oss-cn.oss-accelerate.aliyuncs.com/";//"";
+            public const string OSSUrl = "xxx";
         }
     }
 }
