@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "Cornerstone.Service": {
-      "commandName": "Project",
-      "nativeDebugging": true
-    }
-  }
-}

@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "Cornerstone.Domain": {
-      "commandName": "Project",
-      "nativeDebugging": true
-    }
-  }
-}
